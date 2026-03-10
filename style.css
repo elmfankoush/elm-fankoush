@@ -192,6 +192,25 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
 .player-wrap:hover .player-controls,
 .player-controls.visible{opacity:1;pointer-events:all;}
 
+/* ── OTHER PATH BUTTON ── */
+#otherPathBtn{
+  position:absolute;top:16px;left:16px;
+  z-index:13;padding:9px 18px;border-radius:24px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(6,10,17,.75);backdrop-filter:blur(12px);
+  color:rgba(255,255,255,.85);font-family:'Cairo',sans-serif;
+  font-size:.8rem;font-weight:700;cursor:pointer;
+  transition:all .3s;white-space:nowrap;
+  display:flex;align-items:center;gap:8px;
+  opacity:0;transform:translateY(-6px);
+  animation:revealBtn .5s ease .3s forwards;
+}
+#otherPathBtn .other-icon{ font-size:1rem; }
+#otherPathBtn.elm-other{ border-color:rgba(56,189,248,.3); }
+#otherPathBtn.elm-other:hover{ background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.5);color:#fff;transform:translateY(-2px); }
+#otherPathBtn.fan-other{ border-color:rgba(251,146,60,.3); }
+#otherPathBtn.fan-other:hover{ background:rgba(251,146,60,.15);border-color:rgba(251,146,60,.5);color:#fff;transform:translateY(-2px); }
+
 /* ── RESTART BUTTON ── */
 #restartBtn{
   position:absolute;bottom:72px;left:50%;transform:translateX(-50%);
