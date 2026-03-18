@@ -33,7 +33,14 @@
 <meta name="twitter:image" content="https://elmfankoush.github.io/elm-fankoush/thumbnail.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f97316">
 </head>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/elm-fankoush/service-worker.js');
+  }
+</script>
 <body>
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
