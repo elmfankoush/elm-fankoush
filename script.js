@@ -150,15 +150,16 @@ function loadEpisode(ep) {
   const epNum = ep === 1 ? 'الأولى' : ep === 2 ? 'الثانية' : ep === 3 ? 'الثالثة' : ep;
 
   const titleEl = document.getElementById('epTitle');
-  if(titleEl) titleEl.textContent = `الحلقة ${epNum}: ${epData.title}`;
+  if(titleEl) titleEl.textContent = الحلقة ${epNum}: ${epData.title};
+
+  const watchBtn = document.getElementById('watchBtn');
+  if(watchBtn) watchBtn.textContent = شاهد الحلقة ${epNum} ↓;
 
   const rb = document.getElementById('restartBtn');
   if(rb) rb.remove();
 
   goPage('home', document.querySelector('.nav-links a'));
-  setTimeout(() => scrollToPlayer(), 400);
-
-  loadSeg('intro', true);
+  setTimeout(() => { scrollToPlayer(); loadSeg('intro', true); }, 400);
 }
 
 function updateMeta(seg){
