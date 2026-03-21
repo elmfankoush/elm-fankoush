@@ -11,7 +11,7 @@ document.addEventListener('mousemove', e => {
   cur.style.left = mx+'px'; cur.style.top = my+'px';
 });
 (function animRing(){
-  rx += (mx-rx)*.12; ry += (my-ry)*.12;
+  rx += (mx-rx).12; ry += (my-ry).12;
   ring.style.left = rx+'px'; ring.style.top = ry+'px';
   requestAnimationFrame(animRing);
 })();
@@ -56,12 +56,39 @@ function scrollToPlayer(){
   document.getElementById('playerSection').scrollIntoView({ behavior:'smooth' });
 }
 
-const VIDEOS = {
-  intro:  'intro.mp4',
-  elm_1:  'elm_1.mp4', elm_2: 'elm_2.mp4', elm_3: 'elm_3.mp4',
-  fan_1:  'fan_1.mp4', fan_2: 'fan_2.mp4', fan_3: 'fan_3.mp4',
-  ending: 'ending.mp4'
+// ══════════════════════════════════════════
+//  EPISODES CONFIG
+// ══════════════════════════════════════════
+const EPISODES = {
+  1: {
+    suffix: '',
+    title: 'تفسير الأحلام',
+    desc: 'تفسير الأحلام — بين علم الأعصاب والتراث الشعبي',
+    endingDesc: 'الصورة الكاملة — ماذا يقول العلم وما الفرق الحقيقي؟',
+    overlayQ: 'تفسير الأحلام…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+  2: {
+    suffix: '2',
+    title: 'الأبراج',
+    desc: 'الأبراج — بين علم النفس والتراث الشعبي',
+    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن الأبراج؟',
+    overlayQ: 'الأبراج…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  }
 };
+
+let currentEp = 1;
+
+function getVideos(ep) {
+  const s = EPISODES[ep].suffix;
+  return {
+    intro:  intro${s}.mp4,
+    elm_1:  elm_1${s}.mp4, elm_2: elm_2${s}.mp4, elm_3: elm_3${s}.mp4,
+    fan_1:  fan_1${s}.mp4, fan_2: fan_2${s}.mp4, fan_3: fan_3${s}.mp4,
+    ending: ending${s}.mp4
+  };
+}
+
+let VIDEOS = getVideos(1);
 
 const FLOW = {
   intro  : { type:'choice'                                       },
@@ -97,9 +124,6 @@ function loadSeg(seg, play=false){
   vid.src = VIDEOS[seg];
   updateProgressUI(seg);
   updateMeta(seg);
-  removeOtherPathBtn();
-  const f = FLOW[seg];
-  if(f && f.path) showOtherPathBtn(seg);
   if(play) vid.play();
 }
 
@@ -118,14 +142,38 @@ function updateProgressUI(seg){
   }
 }
 
+// ── LOAD EPISODE ──
+function loadEpisode(ep) {
+  currentEp = ep;
+  VIDEOS = getVideos(ep);
+  const epData = EPISODES[ep];
+  const epNum = ep === 1 ? 'الأولى' : ep === 2 ? 'الثانية' : ep === 3 ? 'الثالثة' : ep;
+
+  // Update episode title
+  const titleEl = document.getElementById('epTitle');
+  if(titleEl) titleEl.textContent = الحلقة ${epNum}: ${epData.title};
+
+  // Remove restart btn if exists
+  const rb = document.getElementById('restartBtn');
+  if(rb) rb.remove();
+
+  // Navigate to home and scroll to player
+  goPage('home', document.querySelector('.nav-links a'));
+  setTimeout(() => scrollToPlayer(), 400);
+
+  // Load intro only — overlay will show when video ends
+  loadSeg('intro');
+}
+
 function updateMeta(seg){
   const badge = document.getElementById('epBadge');
+  const epData = EPISODES[currentEp];
   if(seg === 'intro'){
-    metaDesc.textContent = 'تفسير الأحلام — بين علم الأعصاب والتراث الشعبي';
+    metaDesc.textContent = epData.desc;
     badge.textContent = 'مسار مزدوج ✦';
     badge.style.cssText = 'background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.25);color:var(--elm)';
   } else if(seg === 'ending'){
-    metaDesc.textContent = 'الصورة الكاملة — ماذا يقول العلم وما الفرق الحقيقي؟';
+    metaDesc.textContent = epData.endingDesc;
     badge.textContent = 'الخاتمة الموحدة ✦';
     badge.style.cssText = 'background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.15);color:#fff';
   } else {
@@ -149,7 +197,7 @@ function showOverlay(seg){
   olay.classList.remove('visible');
   overlayBtns.innerHTML = '';
   if(f.type === 'choice'){
-    overlayQ.innerHTML = 'تفسير الأحلام…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟';
+    overlayQ.innerHTML = EPISODES[currentEp].overlayQ;
     overlayHint.textContent = 'اختر المسار الذي تريد متابعته';
     overlayBtns.innerHTML = `
       <div class="overlay-btns-choice">
@@ -161,7 +209,7 @@ function showOverlay(seg){
     const col = isElm ? 'var(--elm)' : 'var(--fan)';
     const cls = isElm ? 'elm-next' : 'fan-next';
     const nextTxt = f.step === 2 ? 'المعلومة الثالثة ←' : 'المعلومة التالية ←';
-    overlayQ.innerHTML = `المعلومة <span style="color:${col}">${f.step} / 3</span> انتهت…`;
+    overlayQ.innerHTML = المعلومة <span style="color:${col}">${f.step} / 3</span> انتهت…;
     overlayHint.textContent = 'أو تخطّ للخاتمة الموحدة مباشرة';
     overlayBtns.innerHTML = `
       <div class="overlay-btns-continue">
@@ -175,32 +223,6 @@ function showOverlay(seg){
 function hideOverlay(){ olay.classList.remove('visible'); }
 function choosePath(path){ hideOverlay(); loadSeg(path+'_1', true); }
 function goNext(seg)      { hideOverlay(); loadSeg(seg, true); }
-
-// ── OTHER PATH BUTTON ──
-function showOtherPathBtn(seg){
-  removeOtherPathBtn();
-  const f = FLOW[seg];
-  if(!f || !f.path) return;
-  const isElm = f.path === 'elm';
-  const btn = document.createElement('button');
-  btn.id = 'otherPathBtn';
-  btn.className = isElm ? 'fan-other' : 'elm-other';
-  btn.innerHTML = isElm
-    ? '<span class="other-icon">🔮</span> عايز تسمع رأي الفنكوش؟'
-    : '<span class="other-icon">🔬</span> عايز تسمع رأي العلم؟';
-  btn.onclick = (e) => {
-    e.stopPropagation();
-    removeOtherPathBtn();
-    const otherPath = isElm ? 'fan' : 'elm';
-    loadSeg(otherPath + '_1', true);
-  };
-  wrap.appendChild(btn);
-}
-
-function removeOtherPathBtn(){
-  const b = document.getElementById('otherPathBtn');
-  if(b) b.remove();
-}
 
 function showRestartBtn(){
   if(document.getElementById('restartBtn')) return;
