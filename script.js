@@ -1,4 +1,4 @@
-══════════════════════════════════════════
+/* ══════════════════════════════════════════
    علم ولا فنكوش؟ — script.js
    ══════════════════════════════════════════ */
 
@@ -11,7 +11,7 @@ document.addEventListener('mousemove', e => {
   cur.style.left = mx+'px'; cur.style.top = my+'px';
 });
 (function animRing(){
-  rx += (mx-rx).12; ry += (my-ry).12;
+  rx += (mx-rx)*.12; ry += (my-ry)*.12;
   ring.style.left = rx+'px'; ring.style.top = ry+'px';
   requestAnimationFrame(animRing);
 })();
@@ -81,10 +81,10 @@ let currentEp = 1;
 function getVideos(ep) {
   const s = EPISODES[ep].suffix;
   return {
-    intro:  intro${s}.mp4,
-    elm_1:  elm_1${s}.mp4, elm_2: elm_2${s}.mp4, elm_3: elm_3${s}.mp4,
-    fan_1:  fan_1${s}.mp4, fan_2: fan_2${s}.mp4, fan_3: fan_3${s}.mp4,
-    ending: ending${s}.mp4
+    intro:  `intro${s}.mp4`,
+    elm_1:  `elm_1${s}.mp4`, elm_2: `elm_2${s}.mp4`, elm_3: `elm_3${s}.mp4`,
+    fan_1:  `fan_1${s}.mp4`, fan_2: `fan_2${s}.mp4`, fan_3: `fan_3${s}.mp4`,
+    ending: `ending${s}.mp4`
   };
 }
 
@@ -120,8 +120,8 @@ let ctrlTimer = null;
 
 function loadSeg(seg, play=false){
   curSeg = seg;
-  vid.preload = play ? 'auto' : 'none';
   vid.src = VIDEOS[seg];
+  vid.load();
   updateProgressUI(seg);
   updateMeta(seg);
   if(play) vid.play();
@@ -151,7 +151,7 @@ function loadEpisode(ep) {
 
   // Update episode title
   const titleEl = document.getElementById('epTitle');
-  if(titleEl) titleEl.textContent = الحلقة ${epNum}: ${epData.title};
+  if(titleEl) titleEl.textContent = `الحلقة ${epNum}: ${epData.title}`;
 
   // Remove restart btn if exists
   const rb = document.getElementById('restartBtn');
@@ -161,8 +161,9 @@ function loadEpisode(ep) {
   goPage('home', document.querySelector('.nav-links a'));
   setTimeout(() => scrollToPlayer(), 400);
 
-  // Load intro only — overlay will show when video ends
+  // Load intro
   loadSeg('intro');
+  showOverlay('intro');
 }
 
 function updateMeta(seg){
@@ -209,7 +210,7 @@ function showOverlay(seg){
     const col = isElm ? 'var(--elm)' : 'var(--fan)';
     const cls = isElm ? 'elm-next' : 'fan-next';
     const nextTxt = f.step === 2 ? 'المعلومة الثالثة ←' : 'المعلومة التالية ←';
-    overlayQ.innerHTML = المعلومة <span style="color:${col}">${f.step} / 3</span> انتهت…;
+    overlayQ.innerHTML = `المعلومة <span style="color:${col}">${f.step} / 3</span> انتهت…`;
     overlayHint.textContent = 'أو تخطّ للخاتمة الموحدة مباشرة';
     overlayBtns.innerHTML = `
       <div class="overlay-btns-continue">
@@ -298,9 +299,7 @@ function toggleFS(){
 function fmt(s){ return Math.floor(s/60) + ':' + Math.floor(s%60).toString().padStart(2,'0'); }
 
 // ── BOOT ──
-curSeg = 'intro';
-updateMeta('intro');
-showOverlay('intro');
+loadSeg('intro');
 ctrl.classList.add('visible');
 
 // ── ABOUT SLOGAN ──
