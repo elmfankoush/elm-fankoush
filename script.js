@@ -299,9 +299,8 @@ function toggleFS(){
 function fmt(s){ return Math.floor(s/60) + ':' + Math.floor(s%60).toString().padStart(2,'0'); }
 
 // ── BOOT ──
-loadSeg('intro');
+loadSeg('intro', true);
 ctrl.classList.add('visible');
-
 // ── ABOUT SLOGAN ──
 const sbo = new IntersectionObserver(entries => {
   entries.forEach(e => {
