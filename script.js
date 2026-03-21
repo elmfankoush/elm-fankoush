@@ -120,6 +120,7 @@ let ctrlTimer = null;
 
 function loadSeg(seg, play=false){
   curSeg = seg;
+  vid.preload = play ? 'auto' : 'none';
   vid.src = VIDEOS[seg];
   updateProgressUI(seg);
   updateMeta(seg);
