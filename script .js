@@ -298,10 +298,8 @@ function toggleFS(){
 function fmt(s){ return Math.floor(s/60) + ':' + Math.floor(s%60).toString().padStart(2,'0'); }
 
 // ── BOOT ──
-curSeg = 'intro';
-updateMeta('intro');
-showOverlay('intro');
-ctrl.classList.add('visible');
+loadSeg('intro');
+ctrl.classList.add('visible');;
 
 // ── ABOUT SLOGAN ──
 const sbo = new IntersectionObserver(entries => {
