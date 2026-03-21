@@ -11,7 +11,7 @@ document.addEventListener('mousemove', e => {
   cur.style.left = mx+'px'; cur.style.top = my+'px';
 });
 (function animRing(){
-  rx += (mx-rx)*.12; ry += (my-ry)*.12;
+  rx += (mx-rx).12; ry += (my-ry).12;
   ring.style.left = rx+'px'; ring.style.top = ry+'px';
   requestAnimationFrame(animRing);
 })();
@@ -97,9 +97,6 @@ function loadSeg(seg, play=false){
   vid.load();
   updateProgressUI(seg);
   updateMeta(seg);
-  removeOtherPathBtn();
-  const f = FLOW[seg];
-  if(f && f.path) showOtherPathBtn(seg);
   if(play) vid.play();
 }
 
@@ -161,7 +158,7 @@ function showOverlay(seg){
     const col = isElm ? 'var(--elm)' : 'var(--fan)';
     const cls = isElm ? 'elm-next' : 'fan-next';
     const nextTxt = f.step === 2 ? 'المعلومة الثالثة ←' : 'المعلومة التالية ←';
-    overlayQ.innerHTML = `المعلومة <span style="color:${col}">${f.step} / 3</span> انتهت…`;
+    overlayQ.innerHTML = المعلومة <span style="color:${col}">${f.step} / 3</span> انتهت…;
     overlayHint.textContent = 'أو تخطّ للخاتمة الموحدة مباشرة';
     overlayBtns.innerHTML = `
       <div class="overlay-btns-continue">
@@ -175,32 +172,6 @@ function showOverlay(seg){
 function hideOverlay(){ olay.classList.remove('visible'); }
 function choosePath(path){ hideOverlay(); loadSeg(path+'_1', true); }
 function goNext(seg)      { hideOverlay(); loadSeg(seg, true); }
-
-// ── OTHER PATH BUTTON ──
-function showOtherPathBtn(seg){
-  removeOtherPathBtn();
-  const f = FLOW[seg];
-  if(!f || !f.path) return;
-  const isElm = f.path === 'elm';
-  const btn = document.createElement('button');
-  btn.id = 'otherPathBtn';
-  btn.className = isElm ? 'fan-other' : 'elm-other';
-  btn.innerHTML = isElm
-    ? '<span class="other-icon">🔮</span> عايز تسمع رأي الفنكوش؟'
-    : '<span class="other-icon">🔬</span> عايز تسمع رأي العلم؟';
-  btn.onclick = (e) => {
-    e.stopPropagation();
-    removeOtherPathBtn();
-    const otherPath = isElm ? 'fan' : 'elm';
-    loadSeg(otherPath + '_1', true);
-  };
-  wrap.appendChild(btn);
-}
-
-function removeOtherPathBtn(){
-  const b = document.getElementById('otherPathBtn');
-  if(b) b.remove();
-}
 
 function showRestartBtn(){
   if(document.getElementById('restartBtn')) return;
