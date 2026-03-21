@@ -1,6 +1,6 @@
-/* ══════════════════════════════════════════
-   علم ولا فنكوش؟ — script.js
+علم ولا فنكوش؟ — script.js
    ══════════════════════════════════════════ */
+
 // ── CUSTOM CURSOR ──
 const cur  = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
@@ -14,6 +14,7 @@ document.addEventListener('mousemove', e => {
   ring.style.left = rx+'px'; ring.style.top = ry+'px';
   requestAnimationFrame(animRing);
 })();
+
 // ── PARTICLES ──
 const pc = document.getElementById('particles');
 for(let i=0;i<25;i++){
@@ -27,6 +28,7 @@ for(let i=0;i<25;i++){
     box-shadow:0 0 ${sz*3}px ${e?'rgba(56,189,248,.5)':'rgba(251,146,60,.5)'};`;
   pc.appendChild(p);
 }
+
 // ── REVEAL ON SCROLL ──
 const ro = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -34,6 +36,7 @@ const ro = new IntersectionObserver(entries => {
   });
 }, { threshold:.15 });
 document.querySelectorAll('[data-reveal]').forEach(el => ro.observe(el));
+
 // ── PAGE NAVIGATION ──
 function goPage(name, el){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -47,9 +50,11 @@ function goPage(name, el){
     });
   }, 100);
 }
+
 function scrollToPlayer(){
   document.getElementById('playerSection').scrollIntoView({ behavior:'smooth' });
 }
+
 // ══════════════════════════════════════════
 //  EPISODES CONFIG
 // ══════════════════════════════════════════
@@ -69,7 +74,9 @@ const EPISODES = {
     overlayQ: 'الأبراج…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
   }
 };
+
 let currentEp = 1;
+
 function getVideos(ep) {
   const s = EPISODES[ep].suffix;
   return {
@@ -79,7 +86,9 @@ function getVideos(ep) {
     ending: `ending${s}.mp4`
   };
 }
+
 let VIDEOS = getVideos(1);
+
 const FLOW = {
   intro  : { type:'choice'                                       },
   elm_1  : { type:'continue', path:'elm', step:1, next:'elm_2'  },
@@ -90,6 +99,7 @@ const FLOW = {
   fan_3  : { type:'auto',     path:'fan', step:3, next:'ending' },
   ending : { type:'end'                                          }
 };
+
 const vid         = document.getElementById('mainVideo');
 const olay        = document.getElementById('choiceOverlay');
 const overlayQ    = document.getElementById('overlayQ');
@@ -103,8 +113,10 @@ const pathProg    = document.getElementById('pathProgress');
 const pathLbl     = document.getElementById('pathLabel');
 const metaDesc    = document.getElementById('metaDesc');
 const ctrl        = document.querySelector('.player-controls');
+
 let curSeg    = '';
 let ctrlTimer = null;
+
 function loadSeg(seg, play=false){
   curSeg = seg;
   vid.src = VIDEOS[seg];
@@ -113,6 +125,7 @@ function loadSeg(seg, play=false){
   updateMeta(seg);
   if(play) vid.play();
 }
+
 function updateProgressUI(seg){
   const f = FLOW[seg];
   if(!f || !f.path){ pathProg.classList.remove('visible'); return; }
@@ -127,22 +140,31 @@ function updateProgressUI(seg){
     else if(i === f.step) d.classList.add('current');
   }
 }
+
 // ── LOAD EPISODE ──
 function loadEpisode(ep) {
   currentEp = ep;
   VIDEOS = getVideos(ep);
   const epData = EPISODES[ep];
   const epNum = ep === 1 ? 'الأولى' : ep === 2 ? 'الثانية' : ep === 3 ? 'الثالثة' : ep;
+
+  // Update episode title
   const titleEl = document.getElementById('epTitle');
   if(titleEl) titleEl.textContent = `الحلقة ${epNum}: ${epData.title}`;
+
+  // Remove restart btn if exists
   const rb = document.getElementById('restartBtn');
   if(rb) rb.remove();
-  olay.classList.remove('visible');
+
+  // Navigate to home and scroll to player
   goPage('home', document.querySelector('.nav-links a'));
   setTimeout(() => scrollToPlayer(), 400);
-  // Load and play intro — overlay shows when video ends
-  loadSeg('intro', true);
+
+  // Load intro
+  loadSeg('intro');
+  showOverlay('intro');
 }
+
 function updateMeta(seg){
   const badge = document.getElementById('epBadge');
   const epData = EPISODES[currentEp];
@@ -168,6 +190,7 @@ function updateMeta(seg){
       : 'background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.25);color:var(--fan)';
   }
 }
+
 function showOverlay(seg){
   const f = FLOW[seg];
   if(!f || f.type === 'end') return;
@@ -196,9 +219,11 @@ function showOverlay(seg){
   }
   requestAnimationFrame(() => requestAnimationFrame(() => olay.classList.add('visible')));
 }
+
 function hideOverlay(){ olay.classList.remove('visible'); }
 function choosePath(path){ hideOverlay(); loadSeg(path+'_1', true); }
 function goNext(seg)      { hideOverlay(); loadSeg(seg, true); }
+
 function showRestartBtn(){
   if(document.getElementById('restartBtn')) return;
   const btn = document.createElement('button');
@@ -207,10 +232,12 @@ function showRestartBtn(){
   btn.onclick = (e) => {
     e.stopPropagation();
     btn.remove();
-    loadSeg('intro', true);
+    loadSeg('intro');
+    showOverlay('intro');
   };
   wrap.appendChild(btn);
 }
+
 // ── CONTROLS AUTO-HIDE ──
 function showControls(){
   ctrl.classList.add('visible');
@@ -219,12 +246,14 @@ function showControls(){
     if(!vid.paused) ctrl.classList.remove('visible');
   }, 2500);
 }
+
 wrap.addEventListener('mousemove', showControls);
 wrap.addEventListener('touchstart', () => {
   ctrl.classList.contains('visible')
     ? ctrl.classList.remove('visible')
     : showControls();
 }, { passive:true });
+
 // ── VIDEO EVENTS ──
 vid.addEventListener('play', () => {
   pBtn.textContent = '⏸';
@@ -251,6 +280,7 @@ vid.addEventListener('ended', () => {
   else if(f.type === 'end') showRestartBtn();
   else                      showOverlay(curSeg);
 });
+
 // ── PLAYER CONTROLS ──
 function handleWrapClick(){ if(!olay.classList.contains('visible')) togglePlay(); }
 function togglePlay(){ vid.paused ? vid.play() : vid.pause(); }
@@ -266,9 +296,11 @@ function toggleFS(){
   document.fullscreenElement ? document.exitFullscreen() : wrap.requestFullscreen();
 }
 function fmt(s){ return Math.floor(s/60) + ':' + Math.floor(s%60).toString().padStart(2,'0'); }
+
 // ── BOOT ──
-loadSeg('intro', true);
+loadSeg('intro');
 ctrl.classList.add('visible');
+
 // ── ABOUT SLOGAN ──
 const sbo = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -281,6 +313,7 @@ const sbo = new IntersectionObserver(entries => {
 }, { threshold:.3 });
 const sb = document.getElementById('sloganBig');
 if(sb) sbo.observe(sb);
+
 document.addEventListener('keydown', e => {
   if(e.code === 'Space' && document.activeElement.tagName !== 'BUTTON'){
     e.preventDefault(); togglePlay();
