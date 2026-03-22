@@ -140,6 +140,21 @@ function updateProgressUI(seg){
     if(i < f.step)        d.classList.add('done');
     else if(i === f.step) d.classList.add('current');
   }
+  const swBtn = document.getElementById('switchPathBtn');
+  if(swBtn){
+    swBtn.textContent = isElm ? '🔮 عايز تسمع رأي الفنكوش؟' : '🔬 عايز تسمع رأي العلم؟';
+    swBtn.className = 'switch-path-btn ' + (isElm ? 'switch-to-fan' : 'switch-to-elm');
+  }
+}
+
+function switchPath(){
+  const f = FLOW[curSeg];
+  if(!f || !f.path) return;
+  const isElm = f.path === 'elm';
+  const step = f.step;
+  const otherSeg = (isElm ? 'fan_' : 'elm_') + step;
+  hideOverlay();
+  loadSeg(otherSeg, true);
 }
 
 // ── LOAD EPISODE ──
@@ -302,7 +317,6 @@ function fmt(s){ return Math.floor(s/60) + ':' + Math.floor(s%60).toString().pad
 // ── BOOT ──
 loadSeg('intro', true);
 ctrl.classList.add('visible');
-document.querySelector('.btn-p').onclick = () => scrollToPlayer();
 
 // ── ABOUT SLOGAN ──
 const sbo = new IntersectionObserver(entries => {
