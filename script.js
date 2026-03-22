@@ -302,6 +302,7 @@ function fmt(s){ return Math.floor(s/60) + ':' + Math.floor(s%60).toString().pad
 // ── BOOT ──
 loadSeg('intro', true);
 ctrl.classList.add('visible');
+document.querySelector('.btn-p').onclick = () => scrollToPlayer();
 
 // ── ABOUT SLOGAN ──
 const sbo = new IntersectionObserver(entries => {
