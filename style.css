@@ -353,3 +353,38 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
   .path-label{font-size:.6rem;padding:2px 8px;}
   .steps-dots .step-dot{width:7px;height:7px;}
 }
+/* ── SWITCH PATH BUTTON ── */
+.switch-path-btn{
+  margin-right:auto;
+  padding:3px 10px;
+  border-radius:20px;
+  border:1px solid;
+  font-family:'Cairo',sans-serif;
+  font-size:.65rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .25s;
+  pointer-events:all;
+  white-space:nowrap;
+}
+.switch-path-btn.switch-to-fan{
+  background:rgba(251,146,60,.08);
+  border-color:rgba(251,146,60,.35);
+  color:var(--fan);
+}
+.switch-path-btn.switch-to-fan:hover{
+  background:rgba(251,146,60,.2);
+  box-shadow:0 0 12px rgba(251,146,60,.3);
+}
+.switch-path-btn.switch-to-elm{
+  background:rgba(56,189,248,.08);
+  border-color:rgba(56,189,248,.35);
+  color:var(--elm);
+}
+.switch-path-btn.switch-to-elm:hover{
+  background:rgba(56,189,248,.2);
+  box-shadow:0 0 12px rgba(56,189,248,.3);
+}
+@media(max-width:640px){
+  .switch-path-btn{ font-size:.6rem; padding:3px 8px; }
+}
