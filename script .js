@@ -341,3 +341,10 @@ document.addEventListener('keydown', e => {
     e.preventDefault(); togglePlay();
   }
 });
+// ربط يدوي إضافي للتأكد من عمل الزرار
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('.sources-btn');
+  if(btn) {
+    btn.addEventListener('click', openSources);
+  }
+});
