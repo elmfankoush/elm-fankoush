@@ -59,9 +59,6 @@ function scrollToPlayer(){
 // ══════════════════════════════════════════
 //  EPISODES CONFIG
 // ══════════════════════════════════════════
-// ══════════════════════════════════════════
-//  EPISODES CONFIG (تحديث المصادر للحلقة 1 و 2)
-// ══════════════════════════════════════════
 const EPISODES = {
   1: {
     suffix: '',
@@ -84,7 +81,7 @@ const EPISODES = {
     endingDesc: 'الخلاصة — النجوم تنير السماء ولا تكتب الأقدار.',
     overlayQ: 'الأبراج…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
     sources: [
-      { label: '📰 دراسة: علاقة الأزمات بالبحث عن الأبراج - BBC', url: 'https://www.bbc.com/worklife/article/20201210-why-stressful-times-make-people-turn-to-astrology' },
+      { label: '📰 دراسة: زيادة البحث عن الأبراج وقت الأزمات - BBC', url: 'https://www.bbc.com/worklife/article/20201210-why-stressful-times-make-people-turn-to-astrology' },
       { label: '👤 كارل يونج: الأبراج كرموز نفسية (النماذج البدئية)', url: 'https://archive.org/details/c.-g.-jung-collected-works-vol-9.1-archetypes-and-the-collective-unconscious' },
       { label: '🚀 ناسا: كيف تغيرت مواقع الأبراج فلكياً (Precession)', url: 'https://spaceplace.nasa.gov/starfinder2/en/' },
       { label: '📚 ابن خلدون: فصل "إبطال صناعة النجوم" - المقدمة', url: 'https://shamela.ws/book/6922/583' },
@@ -92,6 +89,7 @@ const EPISODES = {
     ]
   }
 };
+
 let currentEp = 1;
 
 function getVideos(ep) {
@@ -158,30 +156,20 @@ function updateProgressUI(seg){
   }
 }
 
-// ── LOAD EPISODE ──
 function loadEpisode(ep) {
   currentEp = ep;
   VIDEOS = getVideos(ep);
   const epData = EPISODES[ep];
   const epNum = ep === 1 ? 'الأولى' : ep === 2 ? 'الثانية' : ep === 3 ? 'الثالثة' : ep;
-
   const titleEl = document.getElementById('epTitle');
   if(titleEl) titleEl.textContent = `الحلقة ${epNum}: ${epData.title}`;
-
   const rb = document.getElementById('restartBtn');
   if(rb) rb.remove();
-
   goPage('home', document.querySelector('.nav-links a'));
   setTimeout(() => {
     scrollToPlayer();
     loadSeg('intro', true);
   }, 400);
-
-  const heroBtn = document.querySelector('.btn-p');
-  if(heroBtn) {
-    heroBtn.textContent = `شاهد الحلقة ${epNum} ↓`;
-    heroBtn.onclick = () => scrollToPlayer();
-  }
 }
 
 function updateMeta(seg){
@@ -256,7 +244,6 @@ function showRestartBtn(){
   wrap.appendChild(btn);
 }
 
-// ── CONTROLS AUTO-HIDE ──
 function showControls(){
   ctrl.classList.add('visible');
   clearTimeout(ctrlTimer);
@@ -267,12 +254,9 @@ function showControls(){
 
 wrap.addEventListener('mousemove', showControls);
 wrap.addEventListener('touchstart', () => {
-  ctrl.classList.contains('visible')
-    ? ctrl.classList.remove('visible')
-    : showControls();
+  ctrl.classList.contains('visible') ? ctrl.classList.remove('visible') : showControls();
 }, { passive:true });
 
-// ── VIDEO EVENTS ──
 vid.addEventListener('play', () => {
   pBtn.textContent = '⏸';
   clearTimeout(ctrlTimer);
@@ -299,7 +283,6 @@ vid.addEventListener('ended', () => {
   else                      showOverlay(curSeg);
 });
 
-// ── PLAYER CONTROLS ──
 function handleWrapClick(){ if(!olay.classList.contains('visible')) togglePlay(); }
 function togglePlay(){ vid.paused ? vid.play() : vid.pause(); }
 function seekVid(e){
@@ -315,12 +298,12 @@ function toggleFS(){
 }
 function fmt(s){ return Math.floor(s/60) + ':' + Math.floor(s%60).toString().padStart(2,'0'); }
 
-// ── SOURCES MODAL ──
 function openSources(){
   const ep = EPISODES[currentEp];
   const modal = document.getElementById('sourcesModal');
   const list  = document.getElementById('sourcesList');
   const title = document.getElementById('sourcesTitle');
+  if(!ep) return;
   title.textContent = `📚 مصادر — ${ep.title}`;
   if(!ep.sources || ep.sources.length === 0){
     list.innerHTML = '<p class="no-sources">لم تُضف مصادر لهذه الحلقة بعد.</p>';
@@ -335,18 +318,12 @@ function openSources(){
   }
   modal.classList.add('visible');
 }
-function closeSources(){
-  document.getElementById('sourcesModal').classList.remove('visible');
-}
-document.addEventListener('keydown', e => {
-  if(e.code === 'Escape') closeSources();
-});
+function closeSources(){ document.getElementById('sourcesModal').classList.remove('visible'); }
+document.addEventListener('keydown', e => { if(e.code === 'Escape') closeSources(); });
 
-// ── BOOT ──
 loadSeg('intro', true);
 ctrl.classList.add('visible');
 
-// ── ABOUT SLOGAN ──
 const sbo = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if(e.isIntersecting){
