@@ -59,6 +59,9 @@ function scrollToPlayer(){
 // ══════════════════════════════════════════
 //  EPISODES CONFIG
 // ══════════════════════════════════════════
+// ══════════════════════════════════════════
+//  EPISODES CONFIG (تحديث المصادر للحلقة 1 و 2)
+// ══════════════════════════════════════════
 const EPISODES = {
   1: {
     suffix: '',
@@ -67,23 +70,28 @@ const EPISODES = {
     endingDesc: 'الصورة الكاملة — ماذا يقول العلم وما الفرق الحقيقي؟',
     overlayQ: 'تفسير الأحلام…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
     sources: [
-      { label: 'Matthew Walker — Why We Sleep (2017)', url: 'https://www.amazon.com/Why-We-Sleep-Unlocking-Dreams/dp/1501144316' },
-      { label: 'Sigmund Freud — The Interpretation of Dreams (1899)', url: 'https://www.gutenberg.org/ebooks/33994' },
-      { label: 'APA — The science behind dreaming', url: 'https://www.apa.org/topics/sleep/dreams' },
-      { label: 'الإمام الشاطبي — الموافقات', url: 'https://shamela.ws/book/10924' },
-      { label: 'Confirmation Bias — Psychology Today', url: 'https://www.psychologytoday.com/us/basics/confirmation-bias' },
+      { label: '📘 كتاب "Why We Sleep" - Matthew Walker', url: 'https://www.amazon.com/Why-We-Sleep-Unlocking-Dreams/dp/1501144316' },
+      { label: '🧠 كتاب "تفسير الأحلام" - سيجموند فرويد', url: 'https://www.gutenberg.org/ebooks/33994' },
+      { label: '🔬 موقع APA: العلم وراء الأحلام والـ Amygdala', url: 'https://www.apa.org/topics/sleep/dreams' },
+      { label: '📜 كتاب "الموافقات" - الإمام الشاطبي', url: 'https://shamela.ws/book/10924' },
+      { label: '⚖️ مقال عن الانحياز التأكيدي - Confirmation Bias', url: 'https://www.psychologytoday.com/us/basics/confirmation-bias' }
     ]
   },
   2: {
     suffix: '2',
     title: 'الأبراج',
-    desc: 'الأبراج — بين علم النفس والتراث الشعبي',
-    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن الأبراج؟',
+    desc: 'الأبراج — بين علم النفس وتأثير "بارنوم"',
+    endingDesc: 'الخلاصة — النجوم تنير السماء ولا تكتب الأقدار.',
     overlayQ: 'الأبراج…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-    sources: []
+    sources: [
+      { label: '📰 دراسة: علاقة الأزمات بالبحث عن الأبراج - BBC', url: 'https://www.bbc.com/worklife/article/20201210-why-stressful-times-make-people-turn-to-astrology' },
+      { label: '👤 كارل يونج: الأبراج كرموز نفسية (النماذج البدئية)', url: 'https://archive.org/details/c.-g.-jung-collected-works-vol-9.1-archetypes-and-the-collective-unconscious' },
+      { label: '🚀 ناسا: كيف تغيرت مواقع الأبراج فلكياً (Precession)', url: 'https://spaceplace.nasa.gov/starfinder2/en/' },
+      { label: '📚 ابن خلدون: فصل "إبطال صناعة النجوم" - المقدمة', url: 'https://shamela.ws/book/6922/583' },
+      { label: '📱 تقرير: لماذا ينجذب جيل Z للأبراج؟ - Vice', url: 'https://www.vice.com/en/article/qvqy73/why-is-astrology-so-popular-right-now' }
+    ]
   }
 };
-
 let currentEp = 1;
 
 function getVideos(ep) {
