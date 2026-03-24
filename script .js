@@ -8,28 +8,26 @@ const ring = document.getElementById('cursor-ring');
 let mx=0, my=0, rx=0, ry=0;
 document.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
-  if(cur) { cur.style.left = mx+'px'; cur.style.top = my+'px'; }
+  cur.style.left = mx+'px'; cur.style.top = my+'px';
 });
 (function animRing(){
   rx += (mx-rx)*.12; ry += (my-ry)*.12;
-  if(ring) { ring.style.left = rx+'px'; ring.style.top = ry+'px'; }
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
   requestAnimationFrame(animRing);
 })();
 
 // ── PARTICLES ──
 const pc = document.getElementById('particles');
-if(pc) {
-  for(let i=0;i<25;i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const sz = Math.random()*3+1, e = Math.random()>.5;
-    p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;
-      background:${e?'rgba(56,189,248,':'rgba(251,146,60,'}${Math.random()*.4+.1});
-      animation-duration:${Math.random()*15+10}s;
-      animation-delay:${Math.random()*10}s;
-      box-shadow:0 0 ${sz*3}px ${e?'rgba(56,189,248,.5)':'rgba(251,146,60,.5)'};`;
-    pc.appendChild(p);
-  }
+for(let i=0;i<25;i++){
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const sz = Math.random()*3+1, e = Math.random()>.5;
+  p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;
+    background:${e?'rgba(56,189,248,':'rgba(251,146,60,'}${Math.random()*.4+.1});
+    animation-duration:${Math.random()*15+10}s;
+    animation-delay:${Math.random()*10}s;
+    box-shadow:0 0 ${sz*3}px ${e?'rgba(56,189,248,.5)':'rgba(251,146,60,.5)'};`;
+  pc.appendChild(p);
 }
 
 // ── REVEAL ON SCROLL ──
@@ -43,8 +41,7 @@ document.querySelectorAll('[data-reveal]').forEach(el => ro.observe(el));
 // ── PAGE NAVIGATION ──
 function goPage(name, el){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const targetPage = document.getElementById('page-'+name);
-  if(targetPage) targetPage.classList.add('active');
+  document.getElementById('page-'+name).classList.add('active');
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
   if(el) el.classList.add('active');
   window.scrollTo({ top:0, behavior:'smooth' });
@@ -56,8 +53,7 @@ function goPage(name, el){
 }
 
 function scrollToPlayer(){
-  const player = document.getElementById('playerSection');
-  if(player) player.scrollIntoView({ behavior:'smooth' });
+  document.getElementById('playerSection').scrollIntoView({ behavior:'smooth' });
 }
 
 // ══════════════════════════════════════════
@@ -85,10 +81,10 @@ const EPISODES = {
     endingDesc: 'الخلاصة — النجوم تنير السماء ولا تكتب الأقدار.',
     overlayQ: 'الأبراج…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
     sources: [
-      { label: '📰 دراسة: علاقة الأزمات بالبحث عن الأبراج - BBC', url: 'https://www.bbc.com/worklife/article/20201210-why-stressful-times-make-people-turn-to-astrology' },
-      { label: '👤 كارل يونج: الأبراج كرموز نفسية', url: 'https://archive.org/details/c.-g.-jung-collected-works-vol-9.1-archetypes-and-the-collective-unconscious' },
-      { label: '🚀 ناسا: كيف تغيرت مواقع الأبراج فلكياً', url: 'https://spaceplace.nasa.gov/starfinder2/en/' },
-      { label: '📚 ابن خلدون: فصل "إبطال صناعة النجوم"', url: 'https://shamela.ws/book/6922/583' },
+      { label: '📰 دراسة: زيادة البحث عن الأبراج وقت الأزمات - BBC', url: 'https://www.bbc.com/worklife/article/20201210-why-stressful-times-make-people-turn-to-astrology' },
+      { label: '👤 كارل يونج: الأبراج كرموز نفسية (النماذج البدئية)', url: 'https://archive.org/details/c.-g.-jung-collected-works-vol-9.1-archetypes-and-the-collective-unconscious' },
+      { label: '🚀 ناسا: كيف تغيرت مواقع الأبراج فلكياً (Precession)', url: 'https://spaceplace.nasa.gov/starfinder2/en/' },
+      { label: '📚 ابن خلدون: فصل "إبطال صناعة النجوم" - المقدمة', url: 'https://shamela.ws/book/6922/583' },
       { label: '📱 تقرير: لماذا ينجذب جيل Z للأبراج؟ - Vice', url: 'https://www.vice.com/en/article/qvqy73/why-is-astrology-so-popular-right-now' }
     ]
   }
@@ -137,7 +133,6 @@ let curSeg    = '';
 let ctrlTimer = null;
 
 function loadSeg(seg, play=false){
-  if(!vid) return;
   curSeg = seg;
   vid.src = VIDEOS[seg];
   vid.load();
@@ -148,7 +143,6 @@ function loadSeg(seg, play=false){
 
 function updateProgressUI(seg){
   const f = FLOW[seg];
-  if(!pathProg) return;
   if(!f || !f.path){ pathProg.classList.remove('visible'); return; }
   pathProg.classList.add('visible');
   const isElm = f.path === 'elm';
@@ -156,11 +150,9 @@ function updateProgressUI(seg){
   pathLbl.textContent = isElm ? 'مسار العلم 🔬' : 'مسار الفنكوش 🔮';
   for(let i=1;i<=3;i++){
     const d = document.getElementById('dot'+i);
-    if(d) {
-      d.className = 'step-dot' + (isElm ? '' : ' fan-dot');
-      if(i < f.step)        d.classList.add('done');
-      else if(i === f.step) d.classList.add('current');
-    }
+    d.className = 'step-dot' + (isElm ? '' : ' fan-dot');
+    if(i < f.step)        d.classList.add('done');
+    else if(i === f.step) d.classList.add('current');
   }
 }
 
@@ -169,13 +161,10 @@ function loadEpisode(ep) {
   VIDEOS = getVideos(ep);
   const epData = EPISODES[ep];
   const epNum = ep === 1 ? 'الأولى' : ep === 2 ? 'الثانية' : ep === 3 ? 'الثالثة' : ep;
-
   const titleEl = document.getElementById('epTitle');
   if(titleEl) titleEl.textContent = `الحلقة ${epNum}: ${epData.title}`;
-
   const rb = document.getElementById('restartBtn');
   if(rb) rb.remove();
-
   goPage('home', document.querySelector('.nav-links a'));
   setTimeout(() => {
     scrollToPlayer();
@@ -186,8 +175,6 @@ function loadEpisode(ep) {
 function updateMeta(seg){
   const badge = document.getElementById('epBadge');
   const epData = EPISODES[currentEp];
-  if(!badge || !metaDesc || !epData) return;
-
   if(seg === 'intro'){
     metaDesc.textContent = epData.desc;
     badge.textContent = 'مسار مزدوج ✦';
@@ -213,7 +200,7 @@ function updateMeta(seg){
 
 function showOverlay(seg){
   const f = FLOW[seg];
-  if(!f || f.type === 'end' || !olay) return;
+  if(!f || f.type === 'end') return;
   olay.classList.remove('visible');
   overlayBtns.innerHTML = '';
   if(f.type === 'choice'){
@@ -240,12 +227,12 @@ function showOverlay(seg){
   requestAnimationFrame(() => requestAnimationFrame(() => olay.classList.add('visible')));
 }
 
-function hideOverlay(){ if(olay) olay.classList.remove('visible'); }
+function hideOverlay(){ olay.classList.remove('visible'); }
 function choosePath(path){ hideOverlay(); loadSeg(path+'_1', true); }
 function goNext(seg)      { hideOverlay(); loadSeg(seg, true); }
 
 function showRestartBtn(){
-  if(document.getElementById('restartBtn') || !wrap) return;
+  if(document.getElementById('restartBtn')) return;
   const btn = document.createElement('button');
   btn.id = 'restartBtn';
   btn.textContent = '↺ جرّب المسار الآخر';
@@ -258,7 +245,6 @@ function showRestartBtn(){
 }
 
 function showControls(){
-  if(!ctrl) return;
   ctrl.classList.add('visible');
   clearTimeout(ctrlTimer);
   ctrlTimer = setTimeout(() => {
@@ -266,43 +252,39 @@ function showControls(){
   }, 2500);
 }
 
-if(wrap) {
-  wrap.addEventListener('mousemove', showControls);
-  wrap.addEventListener('touchstart', () => {
-    ctrl.classList.contains('visible') ? ctrl.classList.remove('visible') : showControls();
-  }, { passive:true });
-}
+wrap.addEventListener('mousemove', showControls);
+wrap.addEventListener('touchstart', () => {
+  ctrl.classList.contains('visible') ? ctrl.classList.remove('visible') : showControls();
+}, { passive:true });
 
-if(vid) {
-  vid.addEventListener('play', () => {
-    pBtn.textContent = '⏸';
-    clearTimeout(ctrlTimer);
-    ctrlTimer = setTimeout(() => ctrl.classList.remove('visible'), 2500);
-  });
-  vid.addEventListener('pause', () => {
-    pBtn.textContent = '▶';
-    clearTimeout(ctrlTimer);
-    ctrl.classList.add('visible');
-  });
-  vid.addEventListener('timeupdate', () => {
-    if(!vid.duration) return;
-    pFill.style.width = (vid.currentTime / vid.duration * 100) + '%';
-    tDisp.textContent = fmt(vid.currentTime) + ' / ' + fmt(vid.duration);
-  });
-  vid.addEventListener('ended', () => {
-    pBtn.textContent = '▶';
-    clearTimeout(ctrlTimer);
-    ctrl.classList.add('visible');
-    const f = FLOW[curSeg];
-    if(!f) return;
-    if(f.type === 'auto')     loadSeg(f.next, true);
-    else if(f.type === 'end') showRestartBtn();
-    else                      showOverlay(curSeg);
-  });
-}
+vid.addEventListener('play', () => {
+  pBtn.textContent = '⏸';
+  clearTimeout(ctrlTimer);
+  ctrlTimer = setTimeout(() => ctrl.classList.remove('visible'), 2500);
+});
+vid.addEventListener('pause', () => {
+  pBtn.textContent = '▶';
+  clearTimeout(ctrlTimer);
+  ctrl.classList.add('visible');
+});
+vid.addEventListener('timeupdate', () => {
+  if(!vid.duration) return;
+  pFill.style.width = (vid.currentTime / vid.duration * 100) + '%';
+  tDisp.textContent = fmt(vid.currentTime) + ' / ' + fmt(vid.duration);
+});
+vid.addEventListener('ended', () => {
+  pBtn.textContent = '▶';
+  clearTimeout(ctrlTimer);
+  ctrl.classList.add('visible');
+  const f = FLOW[curSeg];
+  if(!f) return;
+  if(f.type === 'auto')     loadSeg(f.next, true);
+  else if(f.type === 'end') showRestartBtn();
+  else                      showOverlay(curSeg);
+});
 
-function handleWrapClick(){ if(!olay || !olay.classList.contains('visible')) togglePlay(); }
-function togglePlay(){ if(vid.paused) vid.play(); else vid.pause(); }
+function handleWrapClick(){ if(!olay.classList.contains('visible')) togglePlay(); }
+function togglePlay(){ vid.paused ? vid.play() : vid.pause(); }
 function seekVid(e){
   const b = document.getElementById('pBar'), r = b.getBoundingClientRect();
   if(vid.duration) vid.currentTime = ((e.clientX - r.left) / r.width) * vid.duration;
@@ -312,55 +294,35 @@ function toggleMute(){
   document.getElementById('volBtn').textContent = vid.muted ? '🔇' : '🔊';
 }
 function toggleFS(){
-  if(!document.fullscreenElement) wrap.requestFullscreen(); else document.exitFullscreen();
+  document.fullscreenElement ? document.exitFullscreen() : wrap.requestFullscreen();
 }
 function fmt(s){ return Math.floor(s/60) + ':' + Math.floor(s%60).toString().padStart(2,'0'); }
 
-// ── SOURCES LOGIC ──
 function openSources(){
   const ep = EPISODES[currentEp];
   const modal = document.getElementById('sourcesModal');
   const list  = document.getElementById('sourcesList');
   const title = document.getElementById('sourcesTitle');
-  
-  if(!modal || !list || !ep) return;
-
+  if(!ep) return;
   title.textContent = `📚 مصادر — ${ep.title}`;
-  
   if(!ep.sources || ep.sources.length === 0){
     list.innerHTML = '<p class="no-sources">لم تُضف مصادر لهذه الحلقة بعد.</p>';
   } else {
-    list.innerHTML = ep.sources.map((s, i) => `
-      <a class="source-item" href="${s.url}" target="_blank" rel="noopener" style="animation-delay: ${i * 0.1}s">
-        <div class="source-info">
-          <span class="source-num">${(i + 1).toString().padStart(2, '0')}</span>
-          <span class="source-label">${s.label}</span>
-        </div>
+    list.innerHTML = ep.sources.map((s, i) =>
+      `<a class="source-item" href="${s.url}" target="_blank" rel="noopener">
+        <span class="source-num">${i+1}</span>
+        <span class="source-label">${s.label}</span>
         <span class="source-arrow">↗</span>
-      </a>
-    `).join('');
+      </a>`
+    ).join('');
   }
   modal.classList.add('visible');
 }
+function closeSources(){ document.getElementById('sourcesModal').classList.remove('visible'); }
+document.addEventListener('keydown', e => { if(e.code === 'Escape') closeSources(); });
 
-function closeSources(){ 
-  const modal = document.getElementById('sourcesModal');
-  if(modal) modal.classList.remove('visible'); 
-}
-
-document.addEventListener('keydown', e => { 
-  if(e.code === 'Escape') closeSources(); 
-  if(e.code === 'Space' && document.activeElement.tagName !== 'BUTTON'){
-    e.preventDefault(); togglePlay();
-  }
-});
-
-// ── BOOT ──
-document.addEventListener('DOMContentLoaded', () => {
-  loadSeg('intro', false);
-  const btn = document.querySelector('.sources-btn');
-  if(btn) btn.addEventListener('click', openSources);
-});
+loadSeg('intro', true);
+ctrl.classList.add('visible');
 
 const sbo = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -373,3 +335,9 @@ const sbo = new IntersectionObserver(entries => {
 }, { threshold:.3 });
 const sb = document.getElementById('sloganBig');
 if(sb) sbo.observe(sb);
+
+document.addEventListener('keydown', e => {
+  if(e.code === 'Space' && document.activeElement.tagName !== 'BUTTON'){
+    e.preventDefault(); togglePlay();
+  }
+});
