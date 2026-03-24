@@ -367,16 +367,6 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
   pointer-events:all;
   white-space:nowrap;
 }
-.choice-overlay {
-  display: none; /* مخفي في العادي */
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.choice-overlay.visible {
-  display: flex; /* بيظهر لما نضيف الكلاس ده */
-  opacity: 1;
-}
 .switch-path-btn.switch-to-fan{
   background:rgba(251,146,60,.08);
   border-color:rgba(251,146,60,.35);
