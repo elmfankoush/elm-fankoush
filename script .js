@@ -315,6 +315,48 @@ const sbo = new IntersectionObserver(entries => {
 }, { threshold:.3 });
 const sb = document.getElementById('sloganBig');
 if(sb) sbo.observe(sb);
+// دالة إظهار الاختيارات (علم / فنكوش)
+function showOverlay(seg) {
+  const f = FLOW[seg];
+  const olay = document.getElementById('choiceOverlay');
+  const btns = document.getElementById('overlayBtns');
+  const q    = document.getElementById('overlayQ');
+
+  if(!f || !olay || !btns) return;
+
+  olay.classList.remove('visible'); // تصفير الحالة
+  btns.innerHTML = ''; // مسح الزراير القديمة
+
+  if(f.type === 'choice') {
+    q.innerHTML = EPISODES[currentEp].overlayQ;
+    btns.innerHTML = `
+      <button class="ov-btn elm" onclick="choosePath('elm')">عايز أسمع رأي العلم 🔬</button>
+      <button class="ov-btn fan" onclick="choosePath('fan')">عايز أسمع رأي الفنكوش 🔮</button>
+    `;
+  } 
+  else if(f.type === 'continue') {
+    const isElm = f.path === 'elm';
+    const nextText = isElm ? 'أكمل في مسار العلم ←' : 'أكمل في مسار الفنكوش ←';
+    btns.innerHTML = `
+      <button class="ov-btn-next ${isElm?'elm-next':'fan-next'}" onclick="goNext('${f.next}')">${nextText}</button>
+      <button class="ov-btn-next skip" onclick="goNext('ending')">انتقل للخاتمة الموحدة</button>
+    `;
+  }
+
+  // إظهار النافذة بأنيميشن
+  setTimeout(() => olay.classList.add('visible'), 100);
+}
+
+// الدوال اللي الزراير بتنادي عليها
+function choosePath(path) { 
+  document.getElementById('choiceOverlay').classList.remove('visible');
+  loadSeg(path + '_1', true); 
+}
+
+function goNext(seg) { 
+  document.getElementById('choiceOverlay').classList.remove('visible');
+  loadSeg(seg, true); 
+}
 
 document.addEventListener('keydown', e => {
   if(e.code === 'Space' && document.activeElement.tagName !== 'BUTTON'){
