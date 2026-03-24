@@ -59,9 +59,6 @@ function scrollToPlayer(){
 // ══════════════════════════════════════════
 //  EPISODES CONFIG
 // ══════════════════════════════════════════
-// ══════════════════════════════════════════
-//  EPISODES CONFIG (تحديث المصادر للحلقة 1 و 2)
-// ══════════════════════════════════════════
 const EPISODES = {
   1: {
     suffix: '',
@@ -69,29 +66,16 @@ const EPISODES = {
     desc: 'تفسير الأحلام — بين علم الأعصاب والتراث الشعبي',
     endingDesc: 'الصورة الكاملة — ماذا يقول العلم وما الفرق الحقيقي؟',
     overlayQ: 'تفسير الأحلام…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-    sources: [
-      { label: '📘 كتاب "Why We Sleep" - Matthew Walker', url: 'https://www.amazon.com/Why-We-Sleep-Unlocking-Dreams/dp/1501144316' },
-      { label: '🧠 كتاب "تفسير الأحلام" - سيجموند فرويد', url: 'https://www.gutenberg.org/ebooks/33994' },
-      { label: '🔬 موقع APA: العلم وراء الأحلام والـ Amygdala', url: 'https://www.apa.org/topics/sleep/dreams' },
-      { label: '📜 كتاب "الموافقات" - الإمام الشاطبي', url: 'https://shamela.ws/book/10924' },
-      { label: '⚖️ مقال عن الانحياز التأكيدي - Confirmation Bias', url: 'https://www.psychologytoday.com/us/basics/confirmation-bias' }
-    ]
   },
   2: {
     suffix: '2',
     title: 'الأبراج',
-    desc: 'الأبراج — بين علم النفس وتأثير "بارنوم"',
-    endingDesc: 'الخلاصة — النجوم تنير السماء ولا تكتب الأقدار.',
+    desc: 'الأبراج — بين علم النفس والتراث الشعبي',
+    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن الأبراج؟',
     overlayQ: 'الأبراج…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-    sources: [
-      { label: '📰 دراسة: علاقة الأزمات بالبحث عن الأبراج - BBC', url: 'https://www.bbc.com/worklife/article/20201210-why-stressful-times-make-people-turn-to-astrology' },
-      { label: '👤 كارل يونج: الأبراج كرموز نفسية (النماذج البدئية)', url: 'https://archive.org/details/c.-g.-jung-collected-works-vol-9.1-archetypes-and-the-collective-unconscious' },
-      { label: '🚀 ناسا: كيف تغيرت مواقع الأبراج فلكياً (Precession)', url: 'https://spaceplace.nasa.gov/starfinder2/en/' },
-      { label: '📚 ابن خلدون: فصل "إبطال صناعة النجوم" - المقدمة', url: 'https://shamela.ws/book/6922/583' },
-      { label: '📱 تقرير: لماذا ينجذب جيل Z للأبراج؟ - Vice', url: 'https://www.vice.com/en/article/qvqy73/why-is-astrology-so-popular-right-now' }
-    ]
   }
 };
+
 let currentEp = 1;
 
 function getVideos(ep) {
@@ -177,7 +161,7 @@ function loadEpisode(ep) {
     loadSeg('intro', true);
   }, 400);
 
-  const heroBtn = document.querySelector('.btn-p');
+  const heroBtn = document.querySelector('.hero-cta-primary');
   if(heroBtn) {
     heroBtn.textContent = `شاهد الحلقة ${epNum} ↓`;
     heroBtn.onclick = () => scrollToPlayer();
@@ -314,33 +298,6 @@ function toggleFS(){
   document.fullscreenElement ? document.exitFullscreen() : wrap.requestFullscreen();
 }
 function fmt(s){ return Math.floor(s/60) + ':' + Math.floor(s%60).toString().padStart(2,'0'); }
-
-// ── SOURCES MODAL ──
-function openSources(){
-  const ep = EPISODES[currentEp];
-  const modal = document.getElementById('sourcesModal');
-  const list  = document.getElementById('sourcesList');
-  const title = document.getElementById('sourcesTitle');
-  title.textContent = `📚 مصادر — ${ep.title}`;
-  if(!ep.sources || ep.sources.length === 0){
-    list.innerHTML = '<p class="no-sources">لم تُضف مصادر لهذه الحلقة بعد.</p>';
-  } else {
-    list.innerHTML = ep.sources.map((s, i) =>
-      `<a class="source-item" href="${s.url}" target="_blank" rel="noopener">
-        <span class="source-num">${i+1}</span>
-        <span class="source-label">${s.label}</span>
-        <span class="source-arrow">↗</span>
-      </a>`
-    ).join('');
-  }
-  modal.classList.add('visible');
-}
-function closeSources(){
-  document.getElementById('sourcesModal').classList.remove('visible');
-}
-document.addEventListener('keydown', e => {
-  if(e.code === 'Escape') closeSources();
-});
 
 // ── BOOT ──
 loadSeg('intro', true);
