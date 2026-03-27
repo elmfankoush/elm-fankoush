@@ -73,11 +73,11 @@
         </div>
 
         <!-- POLL OVERLAY (جوه الفيديو) -->
-        <div class="choice-overlay" id="pollOverlay" onclick="event.stopPropagation()">
+        <div class="poll-overlay" id="pollOverlay" onclick="event.stopPropagation()">
           <div class="overlay-q">أنت في النهاية اخترت إيه؟<br><span style="font-size:.75em;opacity:.6;font-weight:400;">صوّت وشوف إنت مع كام % من المشاهدين</span></div>
           <div class="overlay-btns-choice" id="pollBtns">
-            <button class="ov-btn elm" onclick="castVote('elm');event.stopPropagation()">🔬 علم</button>
-            <button class="ov-btn fan" onclick="castVote('fankoush');event.stopPropagation()">🔮 فنكوش</button>
+            <button class="ov-btn elm" onclick="castVote('elm');event.stopPropagation()">🔬 أنا اخترت علم</button>
+            <button class="ov-btn fan" onclick="castVote('fankoush');event.stopPropagation()">🔮 أنا اخترت فنكوش</button>
           </div>
           <div id="pollResults" style="display:none;">
             <div class="poll-bar-row">
@@ -329,6 +329,7 @@
 
   window.closePoll = function() {
     document.getElementById('pollOverlay').classList.remove('visible');
+    document.body.style.overflow = '';
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
   };
 </script>
