@@ -258,10 +258,7 @@ function loadEpisode(ep) {
 
   // إخفاء الـ poll لو كان مفتوح
   const poll = document.getElementById('pollOverlay');
-  if(poll && poll.style.display !== 'none') {
-    poll.style.display = 'none';
-    document.body.style.overflow = '';
-  }
+  if(poll) poll.classList.remove('visible');
 
   goPage('home', document.querySelector('.nav-links a'));
   setTimeout(() => {
