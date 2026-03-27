@@ -73,13 +73,13 @@
         </div>
 
         <!-- POLL OVERLAY -->
-        <div class="poll-overlay" id="pollOverlay" onclick="event.stopPropagation()">
+        <div class="poll-overlay" id="pollOverlay">
           <div class="overlay-q">أنت في النهاية اخترت إيه؟<br><span style="font-size:.75em;opacity:.6;font-weight:400;">صوّت وشوف إنت مع كام % من المشاهدين</span></div>
           <div class="overlay-btns-choice">
-            <button class="ov-btn elm poll-btn" id="pollBtnElm" onclick="castVote('elm');event.stopPropagation()">🔬 أنا اخترت علم</button>
-            <button class="ov-btn fan poll-btn" id="pollBtnFan" onclick="castVote('fankoush');event.stopPropagation()">🔮 أنا اخترت فنكوش</button>
+            <button class="ov-btn elm poll-btn" id="pollBtnElm">🔬 أنا اخترت علم</button>
+            <button class="ov-btn fan poll-btn" id="pollBtnFan">🔮 أنا اخترت فنكوش</button>
           </div>
-          <span class="overlay-hint" style="cursor:pointer;" onclick="closePoll();event.stopPropagation()">✕ إغلاق</span>
+          <span class="overlay-hint" id="pollCloseHint" style="cursor:pointer;">✕ إغلاق</span>
         </div>
 
         <!-- CONTROLS -->
@@ -256,32 +256,40 @@
   const db  = getDatabase(app);
   let unsubscribe = null;
 
-  window.showPoll = function(epNum) {
-    const overlay = document.getElementById('pollOverlay');
+  const pollOverlay = document.getElementById('pollOverlay');
+  const btnElm      = document.getElementById('pollBtnElm');
+  const btnFan      = document.getElementById('pollBtnFan');
+  const closeHint   = document.getElementById('pollCloseHint');
+
+  // ربط الأحداث مباشرة
+  btnElm.addEventListener('click', e => { e.stopPropagation(); castVote('elm'); });
+  btnFan.addEventListener('click', e => { e.stopPropagation(); castVote('fankoush'); });
+  closeHint.addEventListener('click', e => { e.stopPropagation(); closePoll(); });
+  pollOverlay.addEventListener('click', e => e.stopPropagation());
+
+  function showPoll(epNum) {
     const key = `voted_ep${epNum}`;
-    overlay.classList.add('visible');
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
 
+    // إعادة تهيئة الزرارين
+    btnElm.innerHTML = '🔬 أنا اخترت علم';
+    btnFan.innerHTML = '🔮 أنا اخترت فنكوش';
+    btnElm.disabled = false;
+    btnFan.disabled = false;
+    btnElm.classList.remove('voted','other');
+    btnFan.classList.remove('voted','other');
+    closeHint.textContent = '✕ إغلاق';
+
+    pollOverlay.classList.add('visible');
+
     if (localStorage.getItem(key)) {
-      // سبق وصوّت — اعرض النسب جوه الزرارين مباشرة
       showResultsInBtns(localStorage.getItem(key));
       listenVotes(epNum);
-    } else {
-      // إعادة تهيئة الزرارين بالنص الأصلي
-      const btnElm = document.getElementById('pollBtnElm');
-      const btnFan = document.getElementById('pollBtnFan');
-      btnElm.innerHTML = '🔬 أنا اخترت علم';
-      btnFan.innerHTML = '🔮 أنا اخترت فنكوش';
-      btnElm.disabled = false;
-      btnFan.disabled = false;
-      btnElm.classList.remove('voted','other');
-      btnFan.classList.remove('voted','other');
     }
-  };
+  }
+  window.showPoll = showPoll;
 
   function showResultsInBtns(choice) {
-    const btnElm = document.getElementById('pollBtnElm');
-    const btnFan = document.getElementById('pollBtnFan');
     btnElm.disabled = true;
     btnFan.disabled = true;
     if (choice === 'elm') {
@@ -293,9 +301,9 @@
     }
   }
 
-  window.castVote = function(choice) {
+  function castVote(choice) {
     const epNum = window._currentEpNum;
-    const key = `voted_ep${epNum}`;
+    const key   = `voted_ep${epNum}`;
     if (!epNum || localStorage.getItem(key)) return;
 
     localStorage.setItem(key, choice);
@@ -304,36 +312,31 @@
 
     showResultsInBtns(choice);
     listenVotes(epNum);
-  };
+  }
 
   function listenVotes(epNum) {
     const votesRef = ref(db, `votes/ep${epNum}`);
     unsubscribe = onValue(votesRef, snap => {
-      const d = snap.val() || { elm: 0, fankoush: 0 };
-      const elm = d.elm || 0;
+      const d   = snap.val() || { elm: 0, fankoush: 0 };
+      const elm = d.elm      || 0;
       const fan = d.fankoush || 0;
-      const tot = elm + fan || 1;
-      const pE = Math.round(elm / tot * 100);
-      const pF = 100 - pE;
-      const choice = localStorage.getItem(`voted_ep${epNum}`);
-
-      const btnElm = document.getElementById('pollBtnElm');
-      const btnFan = document.getElementById('pollBtnFan');
+      const tot = elm + fan  || 1;
+      const pE  = Math.round(elm / tot * 100);
+      const pF  = 100 - pE;
 
       requestAnimationFrame(() => {
         btnElm.innerHTML = `<span class="poll-pct-big">${pE}%</span><span class="poll-pct-lbl">🔬 علم</span>`;
         btnFan.innerHTML = `<span class="poll-pct-big">${pF}%</span><span class="poll-pct-lbl">🔮 فنكوش</span>`;
-        const total = elm + fan;
-        const hint = document.querySelector('#pollOverlay .overlay-hint');
-        if(hint) hint.innerHTML = `إجمالي الأصوات: ${total.toLocaleString('ar-EG')} مشارك · <span style="cursor:pointer" onclick="closePoll();event.stopPropagation()">✕ إغلاق</span>`;
+        closeHint.textContent = `إجمالي الأصوات: ${(elm+fan).toLocaleString('ar-EG')} مشارك  ✕ إغلاق`;
       });
     });
   }
 
-  window.closePoll = function() {
-    document.getElementById('pollOverlay').classList.remove('visible');
+  function closePoll() {
+    pollOverlay.classList.remove('visible');
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
-  };
+  }
+  window.closePoll = closePoll;
 </script>
 
 </body>
