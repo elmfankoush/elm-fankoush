@@ -72,6 +72,29 @@
           <span class="overlay-hint" id="overlayHint"></span>
         </div>
 
+        <!-- POLL (جوه الفيديو) -->
+        <div class="poll-overlay" id="pollOverlay" onclick="event.stopPropagation()">
+          <div class="overlay-q">أنت في النهاية اخترت إيه؟<br><span style="font-size:.75em;opacity:.6;font-weight:400;">صوّت وشوف إنت مع كام % من المشاهدين</span></div>
+          <div class="overlay-btns-choice" id="pollBtns">
+            <button class="ov-btn elm" onclick="castVote('elm');event.stopPropagation()">🔬 أنا اخترت علم</button>
+            <button class="ov-btn fan" onclick="castVote('fankoush');event.stopPropagation()">🔮 أنا اخترت فنكوش</button>
+          </div>
+          <div id="pollResults" style="display:none;width:100%;">
+            <div class="poll-bar-row">
+              <span class="poll-bar-label elm-lbl">🔬 علم</span>
+              <div class="poll-track"><div class="poll-fill fill-elm" id="barElm" style="width:0%"></div></div>
+              <span class="poll-pct" id="pctElm">0%</span>
+            </div>
+            <div class="poll-bar-row">
+              <span class="poll-bar-label fan-lbl">🔮 فنكوش</span>
+              <div class="poll-track"><div class="poll-fill fill-fan" id="barFankoush" style="width:0%"></div></div>
+              <span class="poll-pct" id="pctFankoush">0%</span>
+            </div>
+            <p class="poll-total" id="pollTotal"></p>
+          </div>
+          <span class="overlay-hint" style="cursor:pointer;" onclick="closePoll();event.stopPropagation()">✕ إغلاق</span>
+        </div>
+
         <!-- CONTROLS -->
         <div class="player-controls" onclick="event.stopPropagation()">
           <button class="ctrl-btn" id="playBtn" onclick="togglePlay()" title="تشغيل / إيقاف">▶</button>
@@ -224,32 +247,6 @@
   </div>
 </div>
 
-<!-- ══ POLL OVERLAY ══ -->
-<div id="pollOverlay" style="display:none;" onclick="event.stopPropagation()">
-  <div class="poll-inner">
-    <p class="poll-q">أنت في النهاية اخترت إيه؟</p>
-    <p class="poll-sub">صوّت وشوف إنت مع كام % من المشاهدين</p>
-    <div class="overlay-btns-choice" id="pollBtns">
-      <button class="ov-btn elm" onclick="castVote('elm')">🔬 أنا اخترت علم</button>
-      <button class="ov-btn fan" onclick="castVote('fankoush')">🔮 أنا اخترت فنكوش</button>
-    </div>
-    <div id="pollResults" style="display:none;">
-      <div class="poll-bar-row">
-        <span class="poll-bar-label elm-lbl">🔬 علم</span>
-        <div class="poll-track"><div class="poll-fill fill-elm" id="barElm" style="width:0%"></div></div>
-        <span class="poll-pct" id="pctElm">0%</span>
-      </div>
-      <div class="poll-bar-row">
-        <span class="poll-bar-label fan-lbl">🔮 فنكوش</span>
-        <div class="poll-track"><div class="poll-fill fill-fan" id="barFankoush" style="width:0%"></div></div>
-        <span class="poll-pct" id="pctFankoush">0%</span>
-      </div>
-      <p class="poll-total" id="pollTotal"></p>
-    </div>
-    <button class="poll-close" onclick="closePoll()">✕ إغلاق</button>
-  </div>
-</div>
-
 <script src="script.js"></script>
 
 <!-- ══ FIREBASE ══ -->
@@ -275,8 +272,7 @@
   window.showPoll = function(epNum) {
     const overlay = document.getElementById('pollOverlay');
     const key     = `voted_ep${epNum}`;
-    overlay.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    overlay.classList.add('visible');
 
     // إلغاء الاشتراك السابق لو موجود
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
@@ -332,7 +328,7 @@
   }
 
   window.closePoll = function() {
-    document.getElementById('pollOverlay').style.display = 'none';
+    document.getElementById('pollOverlay').classList.remove('visible');
     document.body.style.overflow = '';
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
   };
