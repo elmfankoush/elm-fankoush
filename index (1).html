@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>علم ولا فنكوش؟</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="particles"></div>
+
+<nav>
+  <ul class="nav-links">
+    <li><a href="#" class="active" onclick="goPage('home',this)">الرئيسية</a></li>
+    <li><a href="#" onclick="goPage('episodes',this)">الحلقات</a></li>
+  </ul>
+  <div class="nav-logo" onclick="goPage('home',document.querySelector('.nav-links a'))">علم ولا فنكوش؟</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="goPage('about',this)">عن البرنامج</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HOME ══ -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-orb orb-elm"></div>
+    <div class="hero-orb orb-fan"></div>
+    <div class="hero-tag">البرنامج التفاعلي الشبابي</div>
+    <h1 class="hero-title"><span class="we">علم</span> ولا <span class="wf">فنكوش</span>؟</h1>
+    <p class="hero-sub">اختر مسارك، استكشف الزاوية التي تريدها، وفي النهاية ستكتشف الصورة الكاملة بنفسك.</p>
+    <div class="hero-cta">
+      <button class="btn-p" onclick="scrollToPlayer()">شاهد الحلقة الأولى ↓</button>
+      <button class="btn-s" onclick="goPage('episodes',document.querySelectorAll('.nav-links a')[1])">كل الحلقات</button>
+    </div>
+    <div class="slogan-strip">
+      <div class="slogan-word sw-1">اسمع</div>
+      <div class="slogan-arrow sa-1">←</div>
+      <div class="slogan-word sw-2">فكّر</div>
+      <div class="slogan-arrow sa-2">←</div>
+      <div class="slogan-word sw-3">قرر</div>
+    </div>
+    <div class="scroll-hint">SCROLL</div>
+  </section>
+
+  <div class="divider-line" style="margin-bottom:60px;"></div>
+
+  <section class="featured-section" id="playerSection">
+    <p class="section-label" data-reveal>الحلقة الأحدث</p>
+    <div class="featured-card" data-reveal="scale">
+      <div class="player-wrap" id="playerWrap" onclick="handleWrapClick()">
+        <video id="mainVideo" preload="metadata" playsinline></video>
+
+        <!-- PATH PROGRESS -->
+        <div id="pathProgress">
+          <span class="path-label" id="pathLabel"></span>
+          <div class="steps-dots">
+            <div class="step-dot" id="dot1"></div>
+            <div class="step-dot" id="dot2"></div>
+            <div class="step-dot" id="dot3"></div>
+          </div>
+          <button class="switch-path-btn" id="switchPathBtn" onclick="switchPath();event.stopPropagation()"></button>
+        </div>
+
+        <!-- OVERLAY -->
+        <div class="choice-overlay" id="choiceOverlay">
+          <div class="overlay-q" id="overlayQ"></div>
+          <div id="overlayBtns"></div>
+          <span class="overlay-hint" id="overlayHint"></span>
+        </div>
+
+        <!-- POLL OVERLAY -->
+        <div class="poll-overlay" id="pollOverlay" onclick="event.stopPropagation()">
+          <div class="overlay-q">أنت في النهاية اخترت إيه؟<br><span style="font-size:.75em;opacity:.6;font-weight:400;">صوّت وشوف إنت مع كام % من المشاهدين</span></div>
+          <div class="overlay-btns-choice">
+            <button class="ov-btn elm poll-btn" id="pollBtnElm" onclick="castVote('elm');event.stopPropagation()">🔬 أنا اخترت علم</button>
+            <button class="ov-btn fan poll-btn" id="pollBtnFan" onclick="castVote('fankoush');event.stopPropagation()">🔮 أنا اخترت فنكوش</button>
+          </div>
+          <span class="overlay-hint" style="cursor:pointer;" onclick="closePoll();event.stopPropagation()">✕ إغلاق</span>
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="player-controls" onclick="event.stopPropagation()">
+          <button class="ctrl-btn" id="playBtn" onclick="togglePlay()" title="تشغيل / إيقاف">▶</button>
+          <button class="ctrl-btn" id="volBtn" onclick="toggleMute()" title="كتم الصوت">🔊</button>
+          <div class="progress-wrap">
+            <div class="progress-bar" id="pBar" onclick="seekVid(event)">
+              <div class="progress-fill" id="pFill"></div>
+            </div>
+          </div>
+          <span class="time-display" id="timDisp">0:00 / 0:00</span>
+          <button class="ctrl-btn" onclick="toggleFS()" title="ملء الشاشة">⛶</button>
+        </div>
+      </div>
+
+      <div class="featured-meta">
+        <div class="ep-info">
+          <h3 id="epTitle">الحلقة الأولى: تفسير الأحلام</h3>
+          <p id="metaDesc">الفرق بين علم الأعصاب والتفسيرات العشوائية على الإنترنت</p>
+        </div>
+        <div class="ep-badge" id="epBadge">مسار مزدوج ✦</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══ EPISODES ══ -->
+<div id="page-episodes" class="page">
+  <div class="episodes-page">
+    <h1 class="page-heading" data-reveal>كل <span>الحلقات</span></h1>
+    <p class="page-sub" data-reveal>اختر موضوعاً، ثم اختر المسار الذي تريده</p>
+    <div class="episodes-grid">
+
+      <!-- ح١ -->
+      <div class="ep-card" data-reveal onclick="loadEpisode(1)">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#050e1f,#12083a)"></div><div class="ep-thumb-icon">😴</div><div class="ep-num">01</div></div>
+        <div class="ep-body"><h3>تفسير الأحلام</h3><p>تفسير الأحلام — بين علم الأعصاب والتراث الشعبي</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ 6–8 دقائق</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح٢ -->
+      <div class="ep-card" data-reveal style="transition-delay:.1s" onclick="loadEpisode(2)">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#0a150a,#1a1a05)"></div><div class="ep-thumb-icon">⭐</div><div class="ep-num">02</div></div>
+        <div class="ep-body"><h3>الأبراج</h3><p>علم الفلك مقابل الأبراج وتأثير بارنوم</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ 6–8 دقائق</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح٣ -->
+      <div class="ep-card locked" data-reveal style="transition-delay:.2s">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#150505,#05051a)"></div><div class="ep-thumb-icon">🔮</div><div class="ep-num">03</div><div class="lock-ic">🔒</div></div>
+        <div class="ep-body"><h3>السحر والشعوذة</h3><p>الفارق بين الاعتقاد الشعبي والتفسير النفسي</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ قريباً</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح٤ -->
+      <div class="ep-card locked" data-reveal style="transition-delay:.3s">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#051510,#050a1a)"></div><div class="ep-thumb-icon">✋</div><div class="ep-num">04</div><div class="lock-ic">🔒</div></div>
+        <div class="ep-body"><h3>قراءة الكف والفنجان</h3><p>أداة نفسية أم خداع؟</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ قريباً</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح٥ -->
+      <div class="ep-card locked" data-reveal style="transition-delay:.1s">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#0a0a1f,#1a0a2e)"></div><div class="ep-thumb-icon">😵‍💫</div><div class="ep-num">05</div><div class="lock-ic">🔒</div></div>
+        <div class="ep-body"><h3>التنويم المغناطيسي</h3><p>علم حقيقي يستخدمه الأطباء أم مجرد تمثيل؟</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ قريباً</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح٦ -->
+      <div class="ep-card locked" data-reveal style="transition-delay:.2s">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#1a0505,#0a0a1a)"></div><div class="ep-thumb-icon">🕵️</div><div class="ep-num">06</div><div class="lock-ic">🔒</div></div>
+        <div class="ep-body"><h3>نظريات المؤامرة</h3><p>ليه دماغنا بتصدق؟ علم النفس وراء الـ Pattern Recognition</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ قريباً</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح٧ -->
+      <div class="ep-card locked" data-reveal style="transition-delay:.3s">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#0a1505,#1a1005)"></div><div class="ep-thumb-icon">🌿</div><div class="ep-num">07</div><div class="lock-ic">🔒</div></div>
+        <div class="ep-body"><h3>الوصفات الشعبية</h3><p>كركم وعسل وثوم — إيه اللي العلم بيثبته وإيه اللي خرافة؟</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ قريباً</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح٨ -->
+      <div class="ep-card locked" data-reveal style="transition-delay:.1s">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#1a0a00,#0a051a)"></div><div class="ep-thumb-icon">⚡</div><div class="ep-num">08</div><div class="lock-ic">🔒</div></div>
+        <div class="ep-body"><h3>القدرات الخارقة</h3><p>اللي بيعرف يطير، اللي مينامش، اللي بيشيل عربيات — علم ولا فنكوش؟</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ قريباً</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح٩ -->
+      <div class="ep-card locked" data-reveal style="transition-delay:.2s">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#1a1000,#050a1a)"></div><div class="ep-thumb-icon">📈</div><div class="ep-num">09</div><div class="lock-ic">🔒</div></div>
+        <div class="ep-body"><h3>التنمية البشرية</h3><p>صناعة بمليارات — علم النفس بيقول إن معظمها Placebo</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ قريباً</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح١٠ -->
+      <div class="ep-card locked" data-reveal style="transition-delay:.3s">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#00051a,#0a001a)"></div><div class="ep-thumb-icon">🛸</div><div class="ep-num">10</div><div class="lock-ic">🔒</div></div>
+        <div class="ep-body"><h3>علم الأجسام الطائرة المجهولة</h3><p>بين الشهادات الحقيقية والتفسيرات العلمية</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ قريباً</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح١١ -->
+      <div class="ep-card locked" data-reveal style="transition-delay:.1s">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#0a001a,#1a0510)"></div><div class="ep-thumb-icon">👻</div><div class="ep-num">11</div><div class="lock-ic">🔒</div></div>
+        <div class="ep-body"><h3>ظواهر ما وراء الطبيعة</h3><p>الـ Paranormal تحت مجهر العلم</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ قريباً</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح١٢ -->
+      <div class="ep-card locked" data-reveal style="transition-delay:.2s">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#05001a,#1a0505)"></div><div class="ep-thumb-icon">🧬</div><div class="ep-num">12</div><div class="lock-ic">🔒</div></div>
+        <div class="ep-body"><h3>الاستنساخ</h3><p>لو استنسخنا الإنسان نفسه — هو نفس الشخص؟</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ قريباً</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+      <!-- ح١٣ -->
+      <div class="ep-card locked" data-reveal style="transition-delay:.3s">
+        <div class="ep-thumb"><div class="ep-thumb-bg" style="background:linear-gradient(135deg,#0a0a0a,#1a051a)"></div><div class="ep-thumb-icon">🤖</div><div class="ep-num">13</div><div class="lock-ic">🔒</div></div>
+        <div class="ep-body"><h3>الذكاء الاصطناعي يحلل نفسه</h3><p>البرنامج معمول بالـ AI — فالـ AI هيكشف أسراره أمام الشخصية</p></div>
+        <div class="ep-footer"><span class="ep-dur">⏱ قريباً</span><div class="ep-tags"><span class="tag t-e">علم</span><span class="tag t-f">فنكوش</span></div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<div id="page-about" class="page">
+  <div class="about-page">
+    <div class="about-hero" data-reveal>
+      <div class="about-logo">علم ولا فنكوش؟</div>
+      <p>برنامج شبابي تفاعلي يضع الظواهر الشائعة تحت الاختبار. لا نهاجم معتقداً، ولا نفرض رأياً — بل نفتح مساحة نقاش حقيقية.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar" data-reveal><div class="pillar-ic">🎯</div><h3>اختر مسارك</h3><p>في بداية كل حلقة، أنت من يختار الزاوية التي تريد رؤية الموضوع منها.</p></div>
+      <div class="pillar" data-reveal style="transition-delay:.1s"><div class="pillar-ic">🔬</div><h3>محتوى موثوق</h3><p>كل حلقة تعتمد على مراجع علمية وآراء متخصصين.</p></div>
+      <div class="pillar" data-reveal style="transition-delay:.15s"><div class="pillar-ic">🤝</div><h3>خاتمة موحدة</h3><p>المسارات تلتقي في نهاية واحدة تكشف الصورة الكاملة.</p></div>
+      <div class="pillar" data-reveal style="transition-delay:.2s"><div class="pillar-ic">🧠</div><h3>التفكير النقدي</h3><p>الهدف مساعدتك على الاستماع لكل الزوايا قبل أن تقرر بعقلك.</p></div>
+    </div>
+    <div class="slogan-big" data-reveal id="sloganBig">
+      <div class="slogan-steps">
+        <div class="step-item step-1"><div class="step-num">١</div><div class="step-word se">اسمع</div><div class="step-sub">من متخصص</div></div>
+        <div class="step-connector">←</div>
+        <div class="step-item step-2"><div class="step-num">٢</div><div class="step-word">فكّر</div><div class="step-sub">في كلامه</div></div>
+        <div class="step-connector">←</div>
+        <div class="step-item step-3"><div class="step-num">٣</div><div class="step-word sf">قرر</div><div class="step-sub">بعقلك</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+<!-- ══ FIREBASE ══ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getDatabase, ref, increment, update, onValue }
+    from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDd7b7SRTKdImQn18TQXVXQsvw_2XLvsPc",
+    authDomain: "elm-58314.firebaseapp.com",
+    projectId: "elm-58314",
+    storageBucket: "elm-58314.firebasestorage.app",
+    messagingSenderId: "862266082474",
+    appId: "1:862266082474:web:7d1c436a78e37f3e3d7cd3",
+    databaseURL: "https://elm-58314-default-rtdb.firebaseio.com"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+  let unsubscribe = null;
+
+  window.showPoll = function(epNum) {
+    const overlay = document.getElementById('pollOverlay');
+    const key = `voted_ep${epNum}`;
+    overlay.classList.add('visible');
+    if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+
+    if (localStorage.getItem(key)) {
+      // سبق وصوّت — اعرض النسب جوه الزرارين مباشرة
+      showResultsInBtns(localStorage.getItem(key));
+      listenVotes(epNum);
+    } else {
+      // إعادة تهيئة الزرارين بالنص الأصلي
+      const btnElm = document.getElementById('pollBtnElm');
+      const btnFan = document.getElementById('pollBtnFan');
+      btnElm.innerHTML = '🔬 أنا اخترت علم';
+      btnFan.innerHTML = '🔮 أنا اخترت فنكوش';
+      btnElm.disabled = false;
+      btnFan.disabled = false;
+      btnElm.classList.remove('voted','other');
+      btnFan.classList.remove('voted','other');
+    }
+  };
+
+  function showResultsInBtns(choice) {
+    const btnElm = document.getElementById('pollBtnElm');
+    const btnFan = document.getElementById('pollBtnFan');
+    btnElm.disabled = true;
+    btnFan.disabled = true;
+    if (choice === 'elm') {
+      btnElm.classList.add('voted');
+      btnFan.classList.add('other');
+    } else {
+      btnFan.classList.add('voted');
+      btnElm.classList.add('other');
+    }
+  }
+
+  window.castVote = function(choice) {
+    const epNum = window._currentEpNum;
+    const key = `voted_ep${epNum}`;
+    if (!epNum || localStorage.getItem(key)) return;
+
+    localStorage.setItem(key, choice);
+    const votesRef = ref(db, `votes/ep${epNum}`);
+    update(votesRef, { [choice]: increment(1) });
+
+    showResultsInBtns(choice);
+    listenVotes(epNum);
+  };
+
+  function listenVotes(epNum) {
+    const votesRef = ref(db, `votes/ep${epNum}`);
+    unsubscribe = onValue(votesRef, snap => {
+      const d = snap.val() || { elm: 0, fankoush: 0 };
+      const elm = d.elm || 0;
+      const fan = d.fankoush || 0;
+      const tot = elm + fan || 1;
+      const pE = Math.round(elm / tot * 100);
+      const pF = 100 - pE;
+      const choice = localStorage.getItem(`voted_ep${epNum}`);
+
+      const btnElm = document.getElementById('pollBtnElm');
+      const btnFan = document.getElementById('pollBtnFan');
+
+      requestAnimationFrame(() => {
+        btnElm.innerHTML = `<span class="poll-pct-big">${pE}%</span><span class="poll-pct-lbl">🔬 علم</span>`;
+        btnFan.innerHTML = `<span class="poll-pct-big">${pF}%</span><span class="poll-pct-lbl">🔮 فنكوش</span>`;
+        const total = elm + fan;
+        const hint = document.querySelector('#pollOverlay .overlay-hint');
+        if(hint) hint.innerHTML = `إجمالي الأصوات: ${total.toLocaleString('ar-EG')} مشارك · <span style="cursor:pointer" onclick="closePoll();event.stopPropagation()">✕ إغلاق</span>`;
+      });
+    });
+  }
+
+  window.closePoll = function() {
+    document.getElementById('pollOverlay').classList.remove('visible');
+    if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+  };
+</script>
+
+</body>
+</html>
