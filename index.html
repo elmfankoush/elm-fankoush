@@ -72,30 +72,27 @@
           <span class="overlay-hint" id="overlayHint"></span>
         </div>
 
-        <!-- POLL OVERLAY -->
-        <div class="poll-overlay" id="pollOverlay">
-          <div class="poll-question">
-            أنت في النهاية اخترت إيه؟
-            <span class="poll-sub">صوّت وشوف إنت مع كام % من المشاهدين</span>
+        <!-- POLL OVERLAY (جوه الفيديو) -->
+        <div class="choice-overlay" id="pollOverlay" onclick="event.stopPropagation()">
+          <div class="overlay-q">أنت في النهاية اخترت إيه؟<br><span style="font-size:.75em;opacity:.6;font-weight:400;">صوّت وشوف إنت مع كام % من المشاهدين</span></div>
+          <div class="overlay-btns-choice" id="pollBtns">
+            <button class="ov-btn elm" onclick="castVote('elm');event.stopPropagation()">🔬 علم</button>
+            <button class="ov-btn fan" onclick="castVote('fankoush');event.stopPropagation()">🔮 فنكوش</button>
           </div>
-
-          <div class="poll-cards">
-            <!-- كارت علم -->
-            <div class="poll-card" id="cardElm">
-              <div class="poll-card-label">🔬 علم</div>
-              <div class="poll-card-bar-wrap"><div class="poll-card-bar elm-bar" id="elmBar"></div></div>
-              <div class="poll-card-pct elm-pct" id="elmPct"></div>
+          <div id="pollResults" style="display:none;">
+            <div class="poll-bar-row">
+              <span class="poll-bar-label elm-lbl">🔬 علم</span>
+              <div class="poll-track"><div class="poll-fill fill-elm" id="barElm" style="width:0%"></div></div>
+              <span class="poll-pct" id="pctElm">0%</span>
             </div>
-            <!-- كارت فنكوش -->
-            <div class="poll-card" id="cardFan">
-              <div class="poll-card-label">🔮 فنكوش</div>
-              <div class="poll-card-bar-wrap"><div class="poll-card-bar fan-bar" id="fanBar"></div></div>
-              <div class="poll-card-pct fan-pct" id="fanPct"></div>
+            <div class="poll-bar-row">
+              <span class="poll-bar-label fan-lbl">🔮 فنكوش</span>
+              <div class="poll-track"><div class="poll-fill fill-fan" id="barFankoush" style="width:0%"></div></div>
+              <span class="poll-pct" id="pctFankoush">0%</span>
             </div>
+            <p class="poll-total" id="pollTotal"></p>
           </div>
-
-          <div class="poll-total-line" id="pollTotal"></div>
-          <span class="overlay-hint" id="pollCloseHint" style="cursor:pointer;">✕ إغلاق</span>
+          <span class="overlay-hint" style="cursor:pointer;" onclick="closePoll();event.stopPropagation()">✕ إغلاق</span>
         </div>
 
         <!-- CONTROLS -->
@@ -271,94 +268,69 @@
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
   let unsubscribe = null;
-  let voted = false;
 
-  const pollOverlay = document.getElementById('pollOverlay');
-  const cardElm     = document.getElementById('cardElm');
-  const cardFan     = document.getElementById('cardFan');
-  const elmBar      = document.getElementById('elmBar');
-  const fanBar      = document.getElementById('fanBar');
-  const elmPct      = document.getElementById('elmPct');
-  const fanPct      = document.getElementById('fanPct');
-  const pollTotal   = document.getElementById('pollTotal');
-  const closeHint   = document.getElementById('pollCloseHint');
+  window.showPoll = function(epNum) {
+    const overlay = document.getElementById('pollOverlay');
+    const key     = `voted_ep${epNum}`;
+    overlay.classList.add('visible');
 
-  // الكارتين clickable
-  cardElm.addEventListener('click', e => { e.stopPropagation(); castVote('elm'); });
-  cardFan.addEventListener('click', e => { e.stopPropagation(); castVote('fankoush'); });
-  closeHint.addEventListener('click', e => { e.stopPropagation(); closePoll(); });
-  pollOverlay.addEventListener('click', e => e.stopPropagation());
-
-  // expose للـ script.js
-  window._castVote = castVote;
-
-  function showPoll(epNum) {
+    // إلغاء الاشتراك السابق لو موجود
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
 
-    // reset
-    voted = false;
-    cardElm.classList.remove('voted','other');
-    cardFan.classList.remove('voted','other');
-    elmBar.style.width = '0%';
-    fanBar.style.width = '0%';
-    elmPct.textContent = '';
-    fanPct.textContent = '';
-    pollTotal.textContent = '';
-
-    pollOverlay.classList.add('visible');
-
-    const prevVote = localStorage.getItem('voted_ep' + epNum);
-    if (prevVote) {
-      // سبق صوّت — اعرض النتائج مباشرة
-      markCards(prevVote);
+    if (localStorage.getItem(key)) {
+      document.getElementById('pollBtns').style.display    = 'none';
+      document.getElementById('pollResults').style.display = 'block';
       listenVotes(epNum);
+    } else {
+      document.getElementById('pollBtns').style.display    = 'flex';
+      document.getElementById('pollResults').style.display = 'none';
+      // reset bars
+      document.getElementById('barElm').style.width      = '0%';
+      document.getElementById('barFankoush').style.width = '0%';
+      document.getElementById('pctElm').textContent      = '0%';
+      document.getElementById('pctFankoush').textContent = '0%';
     }
-  }
-  window.showPoll = showPoll;
+  };
 
-  function castVote(choice) {
+  window.castVote = function(choice) {
     const epNum = window._currentEpNum;
-    if (!epNum || localStorage.getItem('voted_ep' + epNum)) return;
+    const key   = `voted_ep${epNum}`;
+    if (!epNum || localStorage.getItem(key)) return;
 
-    localStorage.setItem('voted_ep' + epNum, choice);
-    update(ref(db, 'votes/ep' + epNum), { [choice]: increment(1) });
+    localStorage.setItem(key, choice);
+    const votesRef = ref(db, `votes/ep${epNum}`);
+    update(votesRef, { [choice]: increment(1) });
 
-    markCards(choice);
+    document.getElementById('pollBtns').style.display    = 'none';
+    document.getElementById('pollResults').style.display = 'block';
     listenVotes(epNum);
-  }
-
-  function markCards(choice) {
-    voted = true;
-    cardElm.classList.toggle('voted', choice === 'elm');
-    cardElm.classList.toggle('other', choice !== 'elm');
-    cardFan.classList.toggle('voted', choice === 'fankoush');
-    cardFan.classList.toggle('other', choice !== 'fankoush');
-  }
+  };
 
   function listenVotes(epNum) {
-    unsubscribe = onValue(ref(db, 'votes/ep' + epNum), snap => {
-      const d   = snap.val() || {};
-      const e   = d.elm      || 0;
-      const f   = d.fankoush || 0;
-      const tot = e + f || 1;
-      const pE  = Math.round(e / tot * 100);
+    const votesRef = ref(db, `votes/ep${epNum}`);
+    unsubscribe = onValue(votesRef, snap => {
+      const d   = snap.val() || { elm: 0, fankoush: 0 };
+      const elm = d.elm      || 0;
+      const fan = d.fankoush || 0;
+      const tot = elm + fan  || 1;
+      const pE  = Math.round(elm / tot * 100);
       const pF  = 100 - pE;
 
       requestAnimationFrame(() => {
-        elmPct.textContent = pE + '%';
-        fanPct.textContent = pF + '%';
-        elmBar.style.width = pE + '%';
-        fanBar.style.width = pF + '%';
-        pollTotal.textContent = '👥 ' + (e + f).toLocaleString('ar-EG') + ' صوت';
+        document.getElementById('barElm').style.width      = pE + '%';
+        document.getElementById('barFankoush').style.width = pF + '%';
+        document.getElementById('pctElm').textContent      = pE + '%';
+        document.getElementById('pctFankoush').textContent = pF + '%';
+        document.getElementById('pollTotal').textContent   =
+          `إجمالي الأصوات: ${(elm + fan).toLocaleString('ar-EG')} مشارك`;
       });
     });
   }
 
-  function closePoll() {
-    pollOverlay.classList.remove('visible');
+  window.closePoll = function() {
+    document.getElementById('pollOverlay').classList.remove('visible');
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
-  }
-  window.closePoll = closePoll;
+  };
 </script>
 
 </body>

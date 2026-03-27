@@ -73,10 +73,95 @@ const EPISODES = {
     desc: 'الأبراج — بين علم النفس والتراث الشعبي',
     endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن الأبراج؟',
     overlayQ: 'الأبراج…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  }
+  },
+  3: {
+    suffix: '3',
+    title: 'السحر والشعوذة',
+    desc: 'السحر والشعوذة — الفارق بين الاعتقاد الشعبي والتفسير النفسي',
+    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن السحر والشعوذة؟',
+    overlayQ: 'السحر والشعوذة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+  4: {
+    suffix: '4',
+    title: 'قراءة الكف والفنجان',
+    desc: 'قراءة الكف والفنجان — أداة نفسية أم خداع؟',
+    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن قراءة الكف والفنجان؟',
+    overlayQ: 'قراءة الكف والفنجان…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+  5: {
+    suffix: '5',
+    title: 'التنويم المغناطيسي',
+    desc: 'التنويم المغناطيسي — علم حقيقي يستخدمه الأطباء أم مجرد تمثيل؟',
+    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن التنويم المغناطيسي؟',
+    overlayQ: 'التنويم المغناطيسي…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+  6: {
+    suffix: '6',
+    title: 'نظريات المؤامرة',
+    desc: 'نظريات المؤامرة — ليه دماغنا بتصدق؟',
+    endingDesc: 'الصورة الكاملة — علم النفس وراء نظريات المؤامرة',
+    overlayQ: 'نظريات المؤامرة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+  7: {
+    suffix: '7',
+    title: 'الوصفات الشعبية',
+    desc: 'الوصفات الشعبية — إيه اللي العلم بيثبته وإيه اللي خرافة؟',
+    endingDesc: 'الصورة الكاملة — العلم والوصفات الشعبية',
+    overlayQ: 'الوصفات الشعبية…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+  8: {
+    suffix: '8',
+    title: 'القدرات الخارقة',
+    desc: 'القدرات الخارقة — اللي بيطير، اللي مينامش، اللي بيشيل عربيات',
+    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن القدرات الخارقة؟',
+    overlayQ: 'القدرات الخارقة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+  9: {
+    suffix: '9',
+    title: 'التنمية البشرية',
+    desc: 'التنمية البشرية — صناعة بمليارات، علم أم Placebo؟',
+    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن التنمية البشرية؟',
+    overlayQ: 'التنمية البشرية…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+  10: {
+    suffix: '10',
+    title: 'علم الأجسام الطائرة المجهولة',
+    desc: 'علم الأجسام الطائرة — بين الشهادات الحقيقية والتفسيرات العلمية',
+    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن الأجسام الطائرة المجهولة؟',
+    overlayQ: 'الأجسام الطائرة المجهولة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+  11: {
+    suffix: '11',
+    title: 'ظواهر ما وراء الطبيعة',
+    desc: 'ظواهر ما وراء الطبيعة — الـ Paranormal تحت مجهر العلم',
+    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن ظواهر ما وراء الطبيعة؟',
+    overlayQ: 'ظواهر ما وراء الطبيعة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+  12: {
+    suffix: '12',
+    title: 'الاستنساخ',
+    desc: 'الاستنساخ — لو استنسخنا الإنسان نفسه، هو نفس الشخص؟',
+    endingDesc: 'الصورة الكاملة — الاستنساخ بين العلم والفلسفة',
+    overlayQ: 'الاستنساخ…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+  13: {
+    suffix: '13',
+    title: 'الذكاء الاصطناعي يحلل نفسه',
+    desc: 'البرنامج معمول بالـ AI — فالـ AI هيكشف أسراره أمام الشخصية',
+    endingDesc: 'الصورة الكاملة — الذكاء الاصطناعي: علم ولا فنكوش؟',
+    overlayQ: 'الذكاء الاصطناعي…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
+  },
+};
+
+// أسماء الحلقات بالعربي
+const EP_NAMES = {
+  1:'الأولى', 2:'الثانية', 3:'الثالثة', 4:'الرابعة', 5:'الخامسة',
+  6:'السادسة', 7:'السابعة', 8:'الثامنة', 9:'التاسعة', 10:'العاشرة',
+  11:'الحادية عشر', 12:'الثانية عشر', 13:'الثالثة عشر'
 };
 
 let currentEp = 1;
+window._currentEpNum = 1;
 
 function getVideos(ep) {
   const s = EPISODES[ep].suffix;
@@ -160,15 +245,20 @@ function switchPath(){
 // ── LOAD EPISODE ──
 function loadEpisode(ep) {
   currentEp = ep;
+  window._currentEpNum = ep;
   VIDEOS = getVideos(ep);
   const epData = EPISODES[ep];
-  const epNum = ep === 1 ? 'الأولى' : ep === 2 ? 'الثانية' : ep === 3 ? 'الثالثة' : ep;
+  const epName = EP_NAMES[ep] || ep;
 
   const titleEl = document.getElementById('epTitle');
-  if(titleEl) titleEl.textContent = `الحلقة ${epNum}: ${epData.title}`;
+  if(titleEl) titleEl.textContent = `الحلقة ${epName}: ${epData.title}`;
 
   const rb = document.getElementById('restartBtn');
   if(rb) rb.remove();
+
+  // إخفاء الـ poll لو كان مفتوح
+  const poll = document.getElementById('pollOverlay');
+  if(poll) poll.classList.remove('visible');
 
   goPage('home', document.querySelector('.nav-links a'));
   setTimeout(() => {
@@ -178,7 +268,7 @@ function loadEpisode(ep) {
 
   const heroBtn = document.querySelector('.btn-p');
   if(heroBtn) {
-    heroBtn.textContent = `شاهد الحلقة ${epNum} ↓`;
+    heroBtn.textContent = `شاهد الحلقة ${epName} ↓`;
     heroBtn.onclick = () => scrollToPlayer();
   }
 }
@@ -293,9 +383,17 @@ vid.addEventListener('ended', () => {
   ctrl.classList.add('visible');
   const f = FLOW[curSeg];
   if(!f) return;
-  if(f.type === 'auto')     loadSeg(f.next, true);
-  else if(f.type === 'end') showRestartBtn();
-  else                      showOverlay(curSeg);
+  if(f.type === 'auto') {
+    loadSeg(f.next, true);
+  } else if(f.type === 'end') {
+    showRestartBtn();
+    // إظهار التصويت بعد ثانية عشان الـ restart btn يظهر أول
+    setTimeout(() => {
+      if(window.showPoll) window.showPoll(currentEp);
+    }, 800);
+  } else {
+    showOverlay(curSeg);
+  }
 });
 
 // ── PLAYER CONTROLS ──
