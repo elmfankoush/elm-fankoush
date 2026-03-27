@@ -284,24 +284,33 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
 .switch-path-btn.switch-to-elm:hover{background:rgba(56,189,248,.2);box-shadow:0 0 12px rgba(56,189,248,.3);}
 
 /* ══ POLL OVERLAY ══ */
-/* Poll overlay — نفس شكل choice-overlay جوه الفيديو */
-.poll-overlay{
-  position:absolute;inset:0;z-index:11;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
-  background:rgba(6,10,17,.72);backdrop-filter:blur(6px);
-  opacity:0;pointer-events:none;
-  transition:opacity .6s ease;
+#pollOverlay{
+  position:fixed;inset:0;z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(6,10,17,.88);backdrop-filter:blur(14px);
   padding:24px;
+  animation:heroIn .4s ease forwards;
 }
-.poll-overlay.visible{opacity:1;pointer-events:all;}
-.poll-overlay.visible .overlay-q{animation:revealQ .5s ease forwards;}
-.poll-overlay.visible .overlay-hint{animation:revealBtn .5s .45s ease both;}
+.poll-inner{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:24px;padding:44px 40px 36px;
+  max-width:480px;width:100%;text-align:center;
+  box-shadow:0 0 80px rgba(56,189,248,.07),0 0 0 1px rgba(56,189,248,.08);
+  position:relative;
+}
+.poll-q{
+  font-family:'Tajawal',sans-serif;font-size:1.6rem;
+  font-weight:900;color:#fff;margin-bottom:8px;
+}
+.poll-sub{
+  font-size:.82rem;color:var(--dim);margin-bottom:32px;
+}
 /* زرارين التصويت بنفس ستايل .ov-btn بالظبط */
 #pollBtns{
-  display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:0;
+  display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:8px;
 }
 /* النتائج */
-#pollResults{margin-top:0;width:100%;}
+#pollResults{margin-top:8px;}
 .poll-bar-row{
   display:flex;align-items:center;gap:10px;
   margin-bottom:16px;direction:rtl;
@@ -326,6 +335,21 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
 .poll-total{
   font-size:.78rem;color:var(--dim);margin-top:4px;margin-bottom:0;
 }
+.poll-close{
+  margin-top:28px;
+  padding:10px 28px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  color:rgba(255,255,255,.5);
+  font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:700;
+  cursor:pointer;transition:all .3s;
+}
+.poll-close:hover{
+  background:rgba(255,255,255,.09);
+  color:rgba(255,255,255,.85);
+  border-color:rgba(255,255,255,.2);
+}
+
 /* ══════════════════════════════════════════
    RESPONSIVE BREAKPOINTS
    ══════════════════════════════════════════ */
