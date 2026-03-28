@@ -252,20 +252,20 @@
 
 <script src="script.js"></script>
 
+<!-- ══ FIREBASE ══ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
   import { getDatabase, ref, increment, update, onValue }
     from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
-  // 🔥 Firebase القديم بتاعك
   const firebaseConfig = {
-    apiKey: "AIzaSyBpVMyFLcKxn-N6qN8G6F9F9Fw5rRYTCRw",
-    authDomain: "elm-fankosh.firebaseapp.com",
-    databaseURL: "https://elm-fankosh-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "elm-fankosh",
-    storageBucket: "elm-fankosh.firebasestorage.app",
-    messagingSenderId: "960036835324",
-    appId: "1:960036835324:web:e2fa69470aa681294cec79"
+    apiKey: "AIzaSyDd7b7SRTKdImQn18TQXVXQsvw_2XLvsPc",
+    authDomain: "elm-58314.firebaseapp.com",
+    projectId: "elm-58314",
+    storageBucket: "elm-58314.firebasestorage.app",
+    messagingSenderId: "862266082474",
+    appId: "1:862266082474:web:7d1c436a78e37f3e3d7cd3",
+    databaseURL: "https://elm-58314-default-rtdb.firebaseio.com"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -273,13 +273,12 @@
   let unsubscribe = null;
 
   window.showPoll = function(epNum) {
-    window._currentEpNum = epNum; // 🔥 مهم جدًا
-
     const overlay = document.getElementById('pollOverlay');
     const key     = `voted_ep${epNum}`;
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
+    // إلغاء الاشتراك السابق لو موجود
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
 
     if (localStorage.getItem(key)) {
@@ -289,7 +288,7 @@
     } else {
       document.getElementById('pollBtns').style.display    = 'flex';
       document.getElementById('pollResults').style.display = 'none';
-
+      // reset bars
       document.getElementById('barElm').style.width      = '0%';
       document.getElementById('barFankoush').style.width = '0%';
       document.getElementById('pctElm').textContent      = '0%';
@@ -303,7 +302,6 @@
     if (!epNum || localStorage.getItem(key)) return;
 
     localStorage.setItem(key, choice);
-
     const votesRef = ref(db, `votes/ep${epNum}`);
     update(votesRef, { [choice]: increment(1) });
 
@@ -319,7 +317,6 @@
       const elm = d.elm      || 0;
       const fan = d.fankoush || 0;
       const tot = elm + fan  || 1;
-
       const pE  = Math.round(elm / tot * 100);
       const pF  = 100 - pE;
 
@@ -328,7 +325,7 @@
         document.getElementById('barFankoush').style.width = pF + '%';
         document.getElementById('pctElm').textContent      = pE + '%';
         document.getElementById('pctFankoush').textContent = pF + '%';
-        document.getElementById('pollTotal').textContent =
+        document.getElementById('pollTotal').textContent   =
           `إجمالي الأصوات: ${(elm + fan).toLocaleString('ar-EG')} مشارك`;
       });
     });
@@ -340,17 +337,6 @@
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
   };
 </script>
-</script>
-<div id="pollOverlay" style="display:none;">
-  <div class="poll-box">
-    <h2 id="pollQuestion">علم ولا فنكوش؟</h2>
 
-    <div class="poll-buttons">
-      <button onclick="vote('elm')">علم 🔬</button>
-      <button onclick="vote('fan')">فنكوش 🔮</button>
-    </div> 
-  </div>
-</div>
-  <script src="script.js"></script>
 </body>
 </html>
