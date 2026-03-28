@@ -420,13 +420,3 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
   .steps-dots .step-dot{width:7px;height:7px;}
   .episodes-grid{grid-template-columns:1fr;}
 }
-<div id="pollOverlay" style="display:none;">
-  <div class="poll-box">
-    <h2 id="pollQuestion">علم ولا فنكوش؟</h2>
-
-    <div class="poll-buttons">
-      <button onclick="vote('elm')">علم 🔬</button>
-      <button onclick="vote('fan')">فنكوش 🔮</button>
-    </div> 
-  </div>
-</div>
