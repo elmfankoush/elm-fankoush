@@ -72,16 +72,6 @@
           <span class="overlay-hint" id="overlayHint"></span>
         </div>
 
-        <!-- POLL OVERLAY -->
-        <div class="poll-overlay" id="pollOverlay" onclick="event.stopPropagation()">
-          <div class="overlay-q">أنت في النهاية اخترت إيه؟<br><span style="font-size:.75em;opacity:.6;font-weight:400;">صوّت وشوف إنت مع كام % من المشاهدين</span></div>
-          <div class="overlay-btns-choice">
-            <button class="ov-btn elm poll-btn" id="pollBtnElm" onclick="castVote('elm');event.stopPropagation()">🔬 أنا اخترت علم</button>
-            <button class="ov-btn fan poll-btn" id="pollBtnFan" onclick="castVote('fankoush');event.stopPropagation()">🔮 أنا اخترت فنكوش</button>
-          </div>
-          <span class="overlay-hint" style="cursor:pointer;" onclick="closePoll();event.stopPropagation()">✕ إغلاق</span>
-        </div>
-
         <!-- CONTROLS -->
         <div class="player-controls" onclick="event.stopPropagation()">
           <button class="ctrl-btn" id="playBtn" onclick="togglePlay()" title="تشغيل / إيقاف">▶</button>
@@ -234,6 +224,32 @@
   </div>
 </div>
 
+<!-- ══ POLL OVERLAY ══ -->
+<div id="pollOverlay" style="display:none;" onclick="event.stopPropagation()">
+  <div class="poll-inner">
+    <p class="poll-q">أنت في النهاية اخترت إيه؟</p>
+    <p class="poll-sub">صوّت وشوف إنت مع كام % من المشاهدين</p>
+    <div class="overlay-btns-choice" id="pollBtns">
+      <button class="ov-btn elm" onclick="castVote('elm')">🔬 أنا اخترت علم</button>
+      <button class="ov-btn fan" onclick="castVote('fankoush')">🔮 أنا اخترت فنكوش</button>
+    </div>
+    <div id="pollResults" style="display:none;">
+      <div class="poll-bar-row">
+        <span class="poll-bar-label elm-lbl">🔬 علم</span>
+        <div class="poll-track"><div class="poll-fill fill-elm" id="barElm" style="width:0%"></div></div>
+        <span class="poll-pct" id="pctElm">0%</span>
+      </div>
+      <div class="poll-bar-row">
+        <span class="poll-bar-label fan-lbl">🔮 فنكوش</span>
+        <div class="poll-track"><div class="poll-fill fill-fan" id="barFankoush" style="width:0%"></div></div>
+        <span class="poll-pct" id="pctFankoush">0%</span>
+      </div>
+      <p class="poll-total" id="pollTotal"></p>
+    </div>
+    <button class="poll-close" onclick="closePoll()">✕ إغلاق</button>
+  </div>
+</div>
+
 <script src="script.js"></script>
 
 <!-- ══ FIREBASE ══ -->
@@ -258,80 +274,66 @@
 
   window.showPoll = function(epNum) {
     const overlay = document.getElementById('pollOverlay');
-    const key = `voted_ep${epNum}`;
-    overlay.classList.add('visible');
+    const key     = `voted_ep${epNum}`;
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    // إلغاء الاشتراك السابق لو موجود
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
 
     if (localStorage.getItem(key)) {
-      // سبق وصوّت — اعرض النسب جوه الزرارين مباشرة
-      showResultsInBtns(localStorage.getItem(key));
+      document.getElementById('pollBtns').style.display    = 'none';
+      document.getElementById('pollResults').style.display = 'block';
       listenVotes(epNum);
     } else {
-      // إعادة تهيئة الزرارين بالنص الأصلي
-      const btnElm = document.getElementById('pollBtnElm');
-      const btnFan = document.getElementById('pollBtnFan');
-      btnElm.innerHTML = '🔬 أنا اخترت علم';
-      btnFan.innerHTML = '🔮 أنا اخترت فنكوش';
-      btnElm.disabled = false;
-      btnFan.disabled = false;
-      btnElm.classList.remove('voted','other');
-      btnFan.classList.remove('voted','other');
+      document.getElementById('pollBtns').style.display    = 'flex';
+      document.getElementById('pollResults').style.display = 'none';
+      // reset bars
+      document.getElementById('barElm').style.width      = '0%';
+      document.getElementById('barFankoush').style.width = '0%';
+      document.getElementById('pctElm').textContent      = '0%';
+      document.getElementById('pctFankoush').textContent = '0%';
     }
   };
 
-  function showResultsInBtns(choice) {
-    const btnElm = document.getElementById('pollBtnElm');
-    const btnFan = document.getElementById('pollBtnFan');
-    btnElm.disabled = true;
-    btnFan.disabled = true;
-    if (choice === 'elm') {
-      btnElm.classList.add('voted');
-      btnFan.classList.add('other');
-    } else {
-      btnFan.classList.add('voted');
-      btnElm.classList.add('other');
-    }
-  }
-
   window.castVote = function(choice) {
     const epNum = window._currentEpNum;
-    const key = `voted_ep${epNum}`;
+    const key   = `voted_ep${epNum}`;
     if (!epNum || localStorage.getItem(key)) return;
 
     localStorage.setItem(key, choice);
     const votesRef = ref(db, `votes/ep${epNum}`);
     update(votesRef, { [choice]: increment(1) });
 
-    showResultsInBtns(choice);
+    document.getElementById('pollBtns').style.display    = 'none';
+    document.getElementById('pollResults').style.display = 'block';
     listenVotes(epNum);
   };
 
   function listenVotes(epNum) {
     const votesRef = ref(db, `votes/ep${epNum}`);
     unsubscribe = onValue(votesRef, snap => {
-      const d = snap.val() || { elm: 0, fankoush: 0 };
-      const elm = d.elm || 0;
+      const d   = snap.val() || { elm: 0, fankoush: 0 };
+      const elm = d.elm      || 0;
       const fan = d.fankoush || 0;
-      const tot = elm + fan || 1;
-      const pE = Math.round(elm / tot * 100);
-      const pF = 100 - pE;
-      const choice = localStorage.getItem(`voted_ep${epNum}`);
-
-      const btnElm = document.getElementById('pollBtnElm');
-      const btnFan = document.getElementById('pollBtnFan');
+      const tot = elm + fan  || 1;
+      const pE  = Math.round(elm / tot * 100);
+      const pF  = 100 - pE;
 
       requestAnimationFrame(() => {
-        btnElm.innerHTML = `<span class="poll-pct-big">${pE}%</span><span class="poll-pct-lbl">🔬 علم</span>`;
-        btnFan.innerHTML = `<span class="poll-pct-big">${pF}%</span><span class="poll-pct-lbl">🔮 فنكوش</span>`;
-        const total = elm + fan;
-        const hint = document.querySelector('#pollOverlay .overlay-hint');
-        if(hint) hint.innerHTML = `إجمالي الأصوات: ${total.toLocaleString('ar-EG')} مشارك · <span style="cursor:pointer" onclick="closePoll();event.stopPropagation()">✕ إغلاق</span>`;
+        document.getElementById('barElm').style.width      = pE + '%';
+        document.getElementById('barFankoush').style.width = pF + '%';
+        document.getElementById('pctElm').textContent      = pE + '%';
+        document.getElementById('pctFankoush').textContent = pF + '%';
+        document.getElementById('pollTotal').textContent   =
+          `إجمالي الأصوات: ${(elm + fan).toLocaleString('ar-EG')} مشارك`;
       });
     });
   }
 
   window.closePoll = function() {
-    document.getElementById('pollOverlay').classList.remove('visible');
+    document.getElementById('pollOverlay').style.display = 'none';
+    document.body.style.overflow = '';
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
   };
 </script>
