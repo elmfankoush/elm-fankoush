@@ -254,22 +254,19 @@ function choosePath(path){ hideOverlay(); loadSeg(path+'_1', true); }
 function goNext(seg)      { hideOverlay(); loadSeg(seg, true); }
 
 function showRestartBtn(){
-  // الزرار هيتضاف جوّا الـ voteOverlay مش فوق الفيديو مباشرة
-  // بيتضاف بعد showPoll في الـ ended event
   if(document.getElementById('restartBtn')) return;
   const btn = document.createElement('button');
   btn.id          = 'restartBtn';
   btn.textContent = '↺ جرّب المسار الآخر';
-  btn.style.zIndex = '15';
   btn.onclick = (e) => {
     e.stopPropagation();
     btn.remove();
     if(window.hideVoteSection) window.hideVoteSection();
     loadSeg('intro', true);
   };
-  // حطّه جوّا الـ voteOverlay لو موجود، وإلا على الـ wrap
-  const vov = document.getElementById('voteOverlay');
-  if(vov) vov.appendChild(btn);
+  // حطّه في الـ vov-top-row عشان يبقى أعلى يسار
+  const topRow = document.querySelector('.vov-top-row');
+  if(topRow) topRow.appendChild(btn);
   else wrap.appendChild(btn);
 }
 
