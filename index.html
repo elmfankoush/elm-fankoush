@@ -73,6 +73,26 @@
           <span class="overlay-hint" id="overlayHint"></span>
         </div>
 
+        <!-- VOTE OVERLAY (فوق الفيديو بعد الـ ending) -->
+        <div class="vote-overlay" id="voteOverlay">
+          <div class="vov-q">أنا اخترت…</div>
+          <div class="vov-choices" id="vovChoices">
+            <button class="vov-btn vov-btn-elm" id="vovBtnElm" onclick="castVote('elm')">
+              <span class="vov-icon">🔬</span>
+              <span class="vov-label">علم</span>
+              <div class="vov-bar-wrap"><div class="vov-bar vov-bar-elm" id="vovBarElm"></div></div>
+              <span class="vov-pct" id="vovPctElm"></span>
+            </button>
+            <button class="vov-btn vov-btn-fan" id="vovBtnFan" onclick="castVote('fankoush')">
+              <span class="vov-icon">🔮</span>
+              <span class="vov-label">فنكوش</span>
+              <div class="vov-bar-wrap"><div class="vov-bar vov-bar-fan" id="vovBarFan"></div></div>
+              <span class="vov-pct" id="vovPctFan"></span>
+            </button>
+          </div>
+          <p class="vov-total" id="vovTotal"></p>
+        </div>
+
         <!-- CONTROLS -->
         <div class="player-controls" onclick="event.stopPropagation()">
           <button class="ctrl-btn" id="playBtn" onclick="togglePlay()" title="تشغيل / إيقاف">▶</button>
@@ -96,32 +116,7 @@
         <div class="ep-badge" id="epBadge">مسار مزدوج ✦</div>
       </div>
 
-      <!-- ══ VOTE SECTION ══ -->
-      <div class="vote-section" id="voteSection">
-        <p class="vote-title">أنا اخترت…</p>
-        <div class="vote-choices" id="voteChoices">
 
-          <button class="vote-box vote-box-elm" id="vboxElm" onclick="castVote('elm')">
-            <span class="vbox-icon">🔬</span>
-            <span class="vbox-label">علم</span>
-            <div class="vbox-bar-wrap">
-              <div class="vbox-bar vbox-bar-elm" id="vbarElm"></div>
-            </div>
-            <span class="vbox-pct" id="vbarPctElm"></span>
-          </button>
-
-          <button class="vote-box vote-box-fan" id="vboxFan" onclick="castVote('fankoush')">
-            <span class="vbox-icon">🔮</span>
-            <span class="vbox-label">فنكوش</span>
-            <div class="vbox-bar-wrap">
-              <div class="vbox-bar vbox-bar-fan" id="vbarFan"></div>
-            </div>
-            <span class="vbox-pct" id="vbarPctFan"></span>
-          </button>
-
-        </div>
-        <p class="vote-total" id="voteTotal"></p>
-      </div>
 
     </div>
   </section>
@@ -265,15 +260,11 @@
   let unsubscribe = null;
 
   // ══ showPoll ══
-  // بيتستدعى من script.js بعد ما ending ينتهي
   window.showPoll = function(epNum) {
     window._currentEpNum = epNum;
 
-    const section = document.getElementById('voteSection');
-    section.classList.add('visible');
-
-    setTimeout(() =>
-      section.scrollIntoView({ behavior:'smooth', block:'nearest' }), 350);
+    const overlay = document.getElementById('voteOverlay');
+    overlay.classList.add('visible');
 
     // وقّف listener أي حلقة قديمة
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
@@ -296,7 +287,6 @@
 
     localStorage.setItem(key, choice);
 
-    // كل حلقة ليها مسارها الخاص في Firebase: votes/ep1 — votes/ep2 — إلخ
     update(ref(db, `votes/ep${epNum}`), { [choice]: increment(1) });
 
     markChosen(choice);
@@ -306,14 +296,13 @@
   // ══ markChosen ══
   function markChosen(choice) {
     const isElm = choice === 'elm';
-    document.getElementById(isElm ? 'vboxElm' : 'vboxFan')
+    document.getElementById(isElm ? 'vovBtnElm' : 'vovBtnFan')
       .classList.add('voted-state', 'chosen');
-    document.getElementById(isElm ? 'vboxFan' : 'vboxElm')
+    document.getElementById(isElm ? 'vovBtnFan' : 'vovBtnElm')
       .classList.add('voted-state');
   }
 
   // ══ listenVotes ══
-  // real-time listener خاص بالحلقة المحددة
   function listenVotes(epNum) {
     unsubscribe = onValue(ref(db, `votes/ep${epNum}`), snap => {
       const d   = snap.val() || {};
@@ -324,29 +313,29 @@
       const pF  = 100 - pE;
 
       requestAnimationFrame(() => requestAnimationFrame(() => {
-        document.getElementById('vbarElm').style.width    = pE + '%';
-        document.getElementById('vbarFan').style.width    = pF + '%';
-        document.getElementById('vbarPctElm').textContent = pE + '%';
-        document.getElementById('vbarPctFan').textContent = pF + '%';
-        document.getElementById('voteTotal').textContent  =
+        document.getElementById('vovBarElm').style.width = pE + '%';
+        document.getElementById('vovBarFan').style.width = pF + '%';
+        document.getElementById('vovPctElm').textContent = pE + '%';
+        document.getElementById('vovPctFan').textContent = pF + '%';
+        document.getElementById('vovTotal').textContent  =
           `👥 ${(elm + fan).toLocaleString('ar-EG')} مشارك`;
       }));
     });
   }
 
   // ══ hideVoteSection ══
-  // reset كامل لما حلقة جديدة تشتغل — بيتستدعى من script.js
   window.hideVoteSection = function() {
-    document.getElementById('voteSection').classList.remove('visible');
+    const overlay = document.getElementById('voteOverlay');
+    overlay.classList.remove('visible');
 
-    ['vboxElm', 'vboxFan'].forEach(id =>
+    ['vovBtnElm', 'vovBtnFan'].forEach(id =>
       document.getElementById(id).classList.remove('voted-state', 'chosen'));
 
-    document.getElementById('vbarElm').style.width    = '0%';
-    document.getElementById('vbarFan').style.width    = '0%';
-    document.getElementById('vbarPctElm').textContent = '';
-    document.getElementById('vbarPctFan').textContent = '';
-    document.getElementById('voteTotal').textContent  = '';
+    document.getElementById('vovBarElm').style.width = '0%';
+    document.getElementById('vovBarFan').style.width = '0%';
+    document.getElementById('vovPctElm').textContent = '';
+    document.getElementById('vovPctFan').textContent = '';
+    document.getElementById('vovTotal').textContent  = '';
 
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
   };

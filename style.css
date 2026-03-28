@@ -217,148 +217,64 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
 .ep-badge{padding:6px 16px;border-radius:20px;font-size:.78rem;font-weight:700;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);color:var(--elm);transition:all .4s;white-space:nowrap;}
 
 /* ══════════════════════════════════════════
-   VOTE SECTION — inline تحت الـ player
-   كل حلقة ليها فوتها الخاص (ep1, ep2, ...)
+   VOTE OVERLAY — فوق الفيديو بعد الـ ending
    ══════════════════════════════════════════ */
-.vote-section{
-  display:none;
-  padding:40px 32px 36px;
-  border-top:1px solid var(--border);
-  background:linear-gradient(180deg,rgba(56,189,248,.025) 0%,transparent 100%);
-  text-align:center;
+.vote-overlay{
+  position:absolute;inset:0;z-index:10;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  background:rgba(6,10,17,.78);backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px;
 }
-.vote-section.visible{
-  display:block;
-  animation:voteReveal .6s cubic-bezier(.34,1.56,.64,1) forwards;
-}
-@keyframes voteReveal{
-  from{opacity:0;transform:translateY(20px);}
-  to  {opacity:1;transform:translateY(0);}
-}
+.vote-overlay.visible{opacity:1;pointer-events:all;animation:vovReveal .6s ease forwards;}
+@keyframes vovReveal{from{opacity:0;}to{opacity:1;}}
 
-.vote-title{
+.vov-q{
   font-family:'Tajawal',sans-serif;
-  font-size:1.5rem;font-weight:900;
-  color:#fff;margin-bottom:28px;
-  letter-spacing:.3px;
+  font-size:clamp(1.1rem,3vw,2rem);font-weight:900;
+  color:#fff;text-align:center;
+  text-shadow:0 2px 30px rgba(0,0,0,.9);
+  animation:revealQ .5s ease forwards;
 }
 
-/* ── المربعين ── */
-.vote-choices{
-  display:flex;gap:24px;justify-content:center;flex-wrap:wrap;
-}
+.vov-choices{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;}
 
-.vote-box{
-  display:flex;flex-direction:column;align-items:center;gap:12px;
-  width:210px;padding:30px 20px 22px;
-  border-radius:20px;border:2px solid;
+.vov-btn{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  width:clamp(130px,20vw,200px);padding:clamp(16px,2.5vw,26px) clamp(14px,2vw,20px) clamp(14px,2vw,20px);
+  border-radius:18px;border:2px solid;
   background:transparent;
   font-family:'Cairo',sans-serif;
   cursor:pointer;
-  transition:
-    transform .35s cubic-bezier(.34,1.56,.64,1),
-    box-shadow .35s,
-    background .35s,
-    border-color .35s,
-    opacity .35s;
-  position:relative;overflow:hidden;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s,background .35s,border-color .35s,opacity .35s;
+  position:relative;overflow:hidden;backdrop-filter:blur(20px);
 }
+.vov-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);opacity:0;transition:opacity .3s;pointer-events:none;}
+.vov-btn:hover::before{opacity:1;}
+.vov-btn:not(.voted-state):hover{transform:translateY(-6px) scale(1.06);}
 
-/* shimmer on hover */
-.vote-box::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.08),transparent);
-  opacity:0;transition:opacity .3s;pointer-events:none;
-}
-.vote-box:hover::before{opacity:1;}
-.vote-box:not(.voted-state):hover{transform:translateY(-7px) scale(1.04);}
+.vov-btn-elm{border-color:rgba(56,189,248,.4);color:var(--elm);box-shadow:0 0 24px rgba(56,189,248,.2);}
+.vov-btn-elm:not(.voted-state):hover{background:rgba(56,189,248,.12);border-color:var(--elm);box-shadow:0 0 56px rgba(56,189,248,.45),0 18px 40px rgba(0,0,0,.35);}
+.vov-btn-fan{border-color:rgba(251,146,60,.4);color:var(--fan);box-shadow:0 0 24px rgba(251,146,60,.2);}
+.vov-btn-fan:not(.voted-state):hover{background:rgba(251,146,60,.12);border-color:var(--fan);box-shadow:0 0 56px rgba(251,146,60,.45),0 18px 40px rgba(0,0,0,.35);}
 
-/* علم */
-.vote-box-elm{
-  border-color:rgba(56,189,248,.35);
-  color:var(--elm);
-}
-.vote-box-elm:not(.voted-state):hover{
-  background:rgba(56,189,248,.07);
-  box-shadow:0 0 48px rgba(56,189,248,.28), 0 18px 40px rgba(0,0,0,.3);
-  border-color:var(--elm);
-}
+.vov-icon{font-size:clamp(1.8rem,3.5vw,2.4rem);line-height:1;}
+.vov-label{font-family:'Tajawal',sans-serif;font-size:clamp(1.2rem,2.5vw,1.55rem);font-weight:900;}
 
-/* فنكوش */
-.vote-box-fan{
-  border-color:rgba(251,146,60,.35);
-  color:var(--fan);
-}
-.vote-box-fan:not(.voted-state):hover{
-  background:rgba(251,146,60,.07);
-  box-shadow:0 0 48px rgba(251,146,60,.28), 0 18px 40px rgba(0,0,0,.3);
-  border-color:var(--fan);
-}
+.vov-bar-wrap{width:100%;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;opacity:0;transition:opacity .5s .15s;}
+.vov-bar{height:100%;border-radius:99px;width:0%;transition:width 1.1s cubic-bezier(.34,1.56,.64,1);}
+.vov-bar-elm{background:linear-gradient(90deg,var(--elm-d),var(--elm));}
+.vov-bar-fan{background:linear-gradient(90deg,var(--fan-d),var(--fan));}
 
-.vbox-icon { font-size:2.4rem; line-height:1; }
-.vbox-label{
-  font-family:'Tajawal',sans-serif;
-  font-size:1.55rem;font-weight:900;
-}
+.vov-pct{font-size:clamp(1.1rem,2vw,1.55rem);font-weight:900;min-height:1.9rem;opacity:0;transition:opacity .5s .25s;}
 
-/* شريط النسبة — مخفي قبل التصويت */
-.vbox-bar-wrap{
-  width:100%;height:7px;
-  background:rgba(255,255,255,.08);
-  border-radius:99px;overflow:hidden;
-  opacity:0;
-  transition:opacity .5s .15s;
-}
-.vbox-bar{
-  height:100%;border-radius:99px;width:0%;
-  transition:width 1.1s cubic-bezier(.34,1.56,.64,1);
-}
-.vbox-bar-elm{ background:linear-gradient(90deg,var(--elm-d),var(--elm)); }
-.vbox-bar-fan{ background:linear-gradient(90deg,var(--fan-d),var(--fan)); }
+/* بعد التصويت */
+.vov-btn.voted-state{cursor:default;pointer-events:none;}
+.vov-btn.voted-state .vov-bar-wrap,.vov-btn.voted-state .vov-pct{opacity:1;}
+.vov-btn.chosen.vov-btn-elm{background:rgba(56,189,248,.12);border-color:var(--elm);box-shadow:0 0 44px rgba(56,189,248,.35);}
+.vov-btn.chosen.vov-btn-fan{background:rgba(251,146,60,.12);border-color:var(--fan);box-shadow:0 0 44px rgba(251,146,60,.35);}
+.vov-btn.voted-state:not(.chosen){opacity:.35;}
 
-/* النسبة — مخفية قبل التصويت */
-.vbox-pct{
-  font-size:1.55rem;font-weight:900;
-  min-height:1.9rem;
-  opacity:0;
-  transition:opacity .5s .25s;
-}
-
-/* ── بعد التصويت ── */
-.vote-box.voted-state{
-  cursor:default;
-  pointer-events:none;
-}
-/* اعرض الـ bar والنسبة */
-.vote-box.voted-state .vbox-bar-wrap,
-.vote-box.voted-state .vbox-pct{
-  opacity:1;
-}
-
-/* الاختيار المحدد يضيّ */
-.vote-box.chosen.vote-box-elm{
-  background:rgba(56,189,248,.1);
-  border-color:var(--elm);
-  box-shadow:0 0 44px rgba(56,189,248,.32), 0 0 0 1px rgba(56,189,248,.2);
-}
-.vote-box.chosen.vote-box-fan{
-  background:rgba(251,146,60,.1);
-  border-color:var(--fan);
-  box-shadow:0 0 44px rgba(251,146,60,.32), 0 0 0 1px rgba(251,146,60,.2);
-}
-
-/* التاني يخفت */
-.vote-box.voted-state:not(.chosen){
-  opacity:.38;
-}
-
-/* عدد المشاركين */
-.vote-total{
-  margin-top:22px;
-  font-size:.82rem;color:var(--dim);font-weight:600;
-  min-height:1.2rem;
-  letter-spacing:.3px;
-}
+.vov-total{font-size:.82rem;color:rgba(255,255,255,.45);font-weight:600;letter-spacing:.3px;min-height:1.2rem;}
 
 /* ══ EPISODES PAGE ══ */
 .episodes-page{max-width:1080px;margin:0 auto;padding:100px 24px 80px;}
@@ -438,7 +354,7 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
   .pillars{gap:12px;}
   .step-item{padding:18px 24px;}
   .ov-btn{padding:12px 36px;}
-  .vote-box{width:180px;padding:24px 16px 18px;}
+  .vov-btn{width:clamp(120px,28vw,180px);}
 }
 
 @media(max-width:640px){
@@ -463,6 +379,8 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
   .overlay-btns-choice{gap:12px;}
   .ov-btn-next{padding:10px 20px;font-size:.85rem;}
   .overlay-btns-continue{flex-direction:column;align-items:center;}
+  .vov-btn{width:clamp(110px,38vw,160px);}
+  .vov-choices{gap:14px;}
   .featured-meta{flex-direction:column;align-items:flex-start;padding:16px 18px;}
   .ep-badge{align-self:flex-start;}
   .episodes-page{padding:80px 16px 60px;}
@@ -474,14 +392,6 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
   .step-connector{transform:rotate(90deg);}
   .step-item{width:100%;max-width:220px;}
   .switch-path-btn{font-size:.6rem;padding:3px 8px;}
-  /* vote mobile */
-  .vote-section{padding:28px 16px 24px;}
-  .vote-title{font-size:1.2rem;margin-bottom:20px;}
-  .vote-choices{gap:14px;}
-  .vote-box{width:148px;padding:22px 12px 16px;}
-  .vbox-icon{font-size:2rem;}
-  .vbox-label{font-size:1.25rem;}
-  .vbox-pct{font-size:1.25rem;}
 }
 
 @media(max-width:380px){
@@ -490,7 +400,5 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
   .path-label{font-size:.6rem;padding:2px 8px;}
   .steps-dots .step-dot{width:7px;height:7px;}
   .episodes-grid{grid-template-columns:1fr;}
-  .vote-box{width:130px;padding:18px 10px 14px;}
-  .vbox-label{font-size:1.1rem;}
-  .vbox-pct{font-size:1.1rem;}
 }
+

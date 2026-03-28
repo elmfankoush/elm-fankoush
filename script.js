@@ -258,6 +258,7 @@ function showRestartBtn(){
   const btn = document.createElement('button');
   btn.id          = 'restartBtn';
   btn.textContent = '↺ جرّب المسار الآخر';
+  btn.style.zIndex = '15'; // فوق الـ vote overlay
   btn.onclick = (e) => {
     e.stopPropagation();
     btn.remove();
