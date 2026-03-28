@@ -420,3 +420,23 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
   .steps-dots .step-dot{width:7px;height:7px;}
   .episodes-grid{grid-template-columns:1fr;}
 }
+#pollOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.poll-box {
+  background: #111;
+  padding: 20px;
+  color: #fff;
+  border-radius: 10px;
+  text-align: center;
+}
