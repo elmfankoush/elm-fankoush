@@ -297,6 +297,13 @@ vid.addEventListener('timeupdate', () => {
   if(!vid.duration) return;
   pFill.style.width = (vid.currentTime / vid.duration * 100) + '%';
   tDisp.textContent = fmt(vid.currentTime) + ' / ' + fmt(vid.duration);
+  // لو المستخدم رجّع الشريط وهو في الـ ending → اخفِ التصويت
+  if(curSeg === 'ending' && !vid.ended){
+    const overlay = document.getElementById('voteOverlay');
+    if(overlay && overlay.classList.contains('visible')){
+      overlay.classList.remove('visible');
+    }
+  }
 });
 vid.addEventListener('ended', () => {
   pBtn.textContent = '▶';
