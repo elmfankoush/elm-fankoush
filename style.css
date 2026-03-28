@@ -188,15 +188,15 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
 
 /* ── RESTART BUTTON ── */
 #restartBtn{
-  position:absolute;bottom:72px;left:50%;transform:translateX(-50%);
-  z-index:13;padding:12px 32px;border-radius:12px;
+  padding:9px 26px;border-radius:12px;
   border:1px solid rgba(255,255,255,.2);
   background:rgba(255,255,255,.08);backdrop-filter:blur(12px);
-  color:#fff;font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;
+  color:rgba(255,255,255,.7);font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:700;
   cursor:pointer;transition:all .3s;white-space:nowrap;
   animation:revealBtn .5s ease forwards;
+  flex-shrink:0;
 }
-#restartBtn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.35);transform:translateX(-50%) translateY(-3px);}
+#restartBtn:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.35);color:#fff;transform:translateY(-2px);}
 
 .ctrl-btn{
   background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:8px;
@@ -393,8 +393,14 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
   .overlay-btns-choice{gap:12px;}
   .ov-btn-next{padding:10px 20px;font-size:.85rem;}
   .overlay-btns-continue{flex-direction:column;align-items:center;}
-  .vov-btn{width:clamp(110px,38vw,160px);}
-  .vov-choices{gap:14px;}
+  .vov-btn{width:42%;max-width:160px;}
+  .vov-choices{gap:10px;}
+  .vov-icon{font-size:1.4rem;}
+  .vov-label{font-size:1rem;}
+  .vov-pct{font-size:.9rem;}
+  .vov-q{font-size:.9rem;}
+  .vote-overlay{gap:10px;padding:12px;}
+  #restartBtn{font-size:.75rem;padding:7px 18px;}
   .featured-meta{flex-direction:column;align-items:flex-start;padding:16px 18px;}
   .ep-badge{align-self:flex-start;}
   .episodes-page{padding:80px 16px 60px;}
