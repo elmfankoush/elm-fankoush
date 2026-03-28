@@ -437,3 +437,52 @@ document.addEventListener('keydown', e => {
     e.preventDefault(); togglePlay();
   }
 });
+// ══════════════════════════════════════════
+//  POLL SYSTEM (FINAL)
+// ══════════════════════════════════════════
+
+// إظهار التصويت
+window.showPoll = function(ep) {
+  const poll = document.getElementById('pollOverlay');
+
+  if (!poll) {
+    console.log("❌ pollOverlay مش موجود");
+    return;
+  }
+
+  // تغيير السؤال حسب الحلقة
+  const q = document.getElementById('pollQuestion');
+  if(q && EPISODES[ep]){
+    q.innerHTML = EPISODES[ep].overlayQ;
+  }
+
+  poll.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  console.log("✅ Poll ظهر للحلقة:", ep);
+};
+
+// إخفاء التصويت لما تدوس بره
+document.addEventListener('click', function(e){
+  const poll = document.getElementById('pollOverlay');
+  if(!poll || poll.style.display === 'none') return;
+
+  if(e.target.id === 'pollOverlay'){
+    poll.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+});
+
+// دالة التصويت (حاليًا بدون Firebase)
+window.vote = function(type){
+  console.log("🗳️ صوت:", type, "الحلقة:", window._currentEpNum);
+
+  const poll = document.getElementById('pollOverlay');
+  if(poll){
+    poll.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  // رسالة بسيطة بعد التصويت
+  alert(type === 'elm' ? '🔬 اخترت العلم!' : '🔮 اخترت الفنكوش!');
+};
