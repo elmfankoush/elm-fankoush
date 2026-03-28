@@ -339,6 +339,28 @@
     document.body.style.overflow = '';
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
   };
+  <div id="pollOverlay" style="display:none;">
+  <div class="poll-box">
+
+    <h2 id="pollQuestion">علم ولا فنكوش؟</h2>
+
+    <!-- الأزرار -->
+    <div id="pollBtns">
+      <button onclick="castVote('elm')">علم 🔬</button>
+      <button onclick="castVote('fankoush')">فنكوش 🔮</button>
+    </div>
+
+    <!-- النتائج -->
+    <div id="pollResults" style="display:none;">
+      <p>علم: <span id="pctElm">0%</span></p>
+      <p>فنكوش: <span id="pctFankoush">0%</span></p>
+    </div>
+
+    <br>
+    <button onclick="closePoll()">إغلاق</button>
+
+  </div>
+</div>
 </script>
 </script>
 
