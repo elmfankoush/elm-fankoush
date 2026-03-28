@@ -486,4 +486,3 @@ window.vote = function(type){
   // رسالة بسيطة بعد التصويت
   alert(type === 'elm' ? '🔬 اخترت العلم!' : '🔮 اخترت الفنكوش!');
 };
-allow pasting
