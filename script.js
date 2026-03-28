@@ -60,100 +60,21 @@ function scrollToPlayer(){
 //  EPISODES CONFIG
 // ══════════════════════════════════════════
 const EPISODES = {
-  1: {
-    suffix: '',
-    title: 'تفسير الأحلام',
-    desc: 'تفسير الأحلام — بين علم الأعصاب والتراث الشعبي',
-    endingDesc: 'الصورة الكاملة — ماذا يقول العلم وما الفرق الحقيقي؟',
-    overlayQ: 'تفسير الأحلام…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  2: {
-    suffix: '2',
-    title: 'الأبراج',
-    desc: 'الأبراج — بين علم النفس والتراث الشعبي',
-    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن الأبراج؟',
-    overlayQ: 'الأبراج…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  3: {
-    suffix: '3',
-    title: 'السحر والشعوذة',
-    desc: 'السحر والشعوذة — الفارق بين الاعتقاد الشعبي والتفسير النفسي',
-    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن السحر والشعوذة؟',
-    overlayQ: 'السحر والشعوذة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  4: {
-    suffix: '4',
-    title: 'قراءة الكف والفنجان',
-    desc: 'قراءة الكف والفنجان — أداة نفسية أم خداع؟',
-    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن قراءة الكف والفنجان؟',
-    overlayQ: 'قراءة الكف والفنجان…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  5: {
-    suffix: '5',
-    title: 'التنويم المغناطيسي',
-    desc: 'التنويم المغناطيسي — علم حقيقي يستخدمه الأطباء أم مجرد تمثيل؟',
-    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن التنويم المغناطيسي؟',
-    overlayQ: 'التنويم المغناطيسي…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  6: {
-    suffix: '6',
-    title: 'نظريات المؤامرة',
-    desc: 'نظريات المؤامرة — ليه دماغنا بتصدق؟',
-    endingDesc: 'الصورة الكاملة — علم النفس وراء نظريات المؤامرة',
-    overlayQ: 'نظريات المؤامرة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  7: {
-    suffix: '7',
-    title: 'الوصفات الشعبية',
-    desc: 'الوصفات الشعبية — إيه اللي العلم بيثبته وإيه اللي خرافة؟',
-    endingDesc: 'الصورة الكاملة — العلم والوصفات الشعبية',
-    overlayQ: 'الوصفات الشعبية…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  8: {
-    suffix: '8',
-    title: 'القدرات الخارقة',
-    desc: 'القدرات الخارقة — اللي بيطير، اللي مينامش، اللي بيشيل عربيات',
-    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن القدرات الخارقة؟',
-    overlayQ: 'القدرات الخارقة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  9: {
-    suffix: '9',
-    title: 'التنمية البشرية',
-    desc: 'التنمية البشرية — صناعة بمليارات، علم أم Placebo؟',
-    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن التنمية البشرية؟',
-    overlayQ: 'التنمية البشرية…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  10: {
-    suffix: '10',
-    title: 'علم الأجسام الطائرة المجهولة',
-    desc: 'علم الأجسام الطائرة — بين الشهادات الحقيقية والتفسيرات العلمية',
-    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن الأجسام الطائرة المجهولة؟',
-    overlayQ: 'الأجسام الطائرة المجهولة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  11: {
-    suffix: '11',
-    title: 'ظواهر ما وراء الطبيعة',
-    desc: 'ظواهر ما وراء الطبيعة — الـ Paranormal تحت مجهر العلم',
-    endingDesc: 'الصورة الكاملة — ماذا يقول العلم عن ظواهر ما وراء الطبيعة؟',
-    overlayQ: 'ظواهر ما وراء الطبيعة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  12: {
-    suffix: '12',
-    title: 'الاستنساخ',
-    desc: 'الاستنساخ — لو استنسخنا الإنسان نفسه، هو نفس الشخص؟',
-    endingDesc: 'الصورة الكاملة — الاستنساخ بين العلم والفلسفة',
-    overlayQ: 'الاستنساخ…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
-  13: {
-    suffix: '13',
-    title: 'الذكاء الاصطناعي يحلل نفسه',
-    desc: 'البرنامج معمول بالـ AI — فالـ AI هيكشف أسراره أمام الشخصية',
-    endingDesc: 'الصورة الكاملة — الذكاء الاصطناعي: علم ولا فنكوش؟',
-    overlayQ: 'الذكاء الاصطناعي…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟',
-  },
+  1:  { suffix:'',   title:'تفسير الأحلام',               desc:'تفسير الأحلام — بين علم الأعصاب والتراث الشعبي',               endingDesc:'الصورة الكاملة — ماذا يقول العلم وما الفرق الحقيقي؟',              overlayQ:'تفسير الأحلام…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  2:  { suffix:'2',  title:'الأبراج',                     desc:'الأبراج — بين علم النفس والتراث الشعبي',                       endingDesc:'الصورة الكاملة — ماذا يقول العلم عن الأبراج؟',                      overlayQ:'الأبراج…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  3:  { suffix:'3',  title:'السحر والشعوذة',              desc:'السحر والشعوذة — الفارق بين الاعتقاد الشعبي والتفسير النفسي',   endingDesc:'الصورة الكاملة — ماذا يقول العلم عن السحر والشعوذة؟',              overlayQ:'السحر والشعوذة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  4:  { suffix:'4',  title:'قراءة الكف والفنجان',         desc:'قراءة الكف والفنجان — أداة نفسية أم خداع؟',                    endingDesc:'الصورة الكاملة — ماذا يقول العلم عن قراءة الكف والفنجان؟',         overlayQ:'قراءة الكف والفنجان…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  5:  { suffix:'5',  title:'التنويم المغناطيسي',          desc:'التنويم المغناطيسي — علم حقيقي يستخدمه الأطباء أم مجرد تمثيل؟', endingDesc:'الصورة الكاملة — ماذا يقول العلم عن التنويم المغناطيسي؟',         overlayQ:'التنويم المغناطيسي…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  6:  { suffix:'6',  title:'نظريات المؤامرة',             desc:'نظريات المؤامرة — ليه دماغنا بتصدق؟',                          endingDesc:'الصورة الكاملة — علم النفس وراء نظريات المؤامرة',                   overlayQ:'نظريات المؤامرة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  7:  { suffix:'7',  title:'الوصفات الشعبية',             desc:'الوصفات الشعبية — إيه اللي العلم بيثبته وإيه اللي خرافة؟',     endingDesc:'الصورة الكاملة — العلم والوصفات الشعبية',                          overlayQ:'الوصفات الشعبية…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  8:  { suffix:'8',  title:'القدرات الخارقة',             desc:'القدرات الخارقة — اللي بيطير، اللي مينامش، اللي بيشيل عربيات', endingDesc:'الصورة الكاملة — ماذا يقول العلم عن القدرات الخارقة؟',             overlayQ:'القدرات الخارقة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  9:  { suffix:'9',  title:'التنمية البشرية',             desc:'التنمية البشرية — صناعة بمليارات، علم أم Placebo؟',             endingDesc:'الصورة الكاملة — ماذا يقول العلم عن التنمية البشرية؟',             overlayQ:'التنمية البشرية…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  10: { suffix:'10', title:'الأجسام الطائرة المجهولة',    desc:'علم الأجسام الطائرة — بين الشهادات الحقيقية والتفسيرات العلمية', endingDesc:'الصورة الكاملة — ماذا يقول العلم عن الأجسام الطائرة المجهولة؟', overlayQ:'الأجسام الطائرة المجهولة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  11: { suffix:'11', title:'ظواهر ما وراء الطبيعة',       desc:'ظواهر ما وراء الطبيعة — الـ Paranormal تحت مجهر العلم',        endingDesc:'الصورة الكاملة — ماذا يقول العلم عن ظواهر ما وراء الطبيعة؟',    overlayQ:'ظواهر ما وراء الطبيعة…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  12: { suffix:'12', title:'الاستنساخ',                   desc:'الاستنساخ — لو استنسخنا الإنسان نفسه، هو نفس الشخص؟',          endingDesc:'الصورة الكاملة — الاستنساخ بين العلم والفلسفة',                   overlayQ:'الاستنساخ…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
+  13: { suffix:'13', title:'الذكاء الاصطناعي يحلل نفسه', desc:'البرنامج معمول بالـ AI — فالـ AI هيكشف أسراره أمام الشخصية',   endingDesc:'الصورة الكاملة — الذكاء الاصطناعي: علم ولا فنكوش؟',              overlayQ:'الذكاء الاصطناعي…<br><span style="color:var(--elm)">علم</span> ولا <span style="color:var(--fan)">فنكوش</span>؟' },
 };
 
-// أسماء الحلقات بالعربي
 const EP_NAMES = {
   1:'الأولى', 2:'الثانية', 3:'الثالثة', 4:'الرابعة', 5:'الخامسة',
   6:'السادسة', 7:'السابعة', 8:'الثامنة', 9:'التاسعة', 10:'العاشرة',
@@ -203,12 +124,15 @@ const ctrl        = document.querySelector('.player-controls');
 let curSeg    = '';
 let ctrlTimer = null;
 
+// ══ loadSeg ══
 function loadSeg(seg, play=false){
   curSeg = seg;
   vid.src = VIDEOS[seg];
   vid.load();
   updateProgressUI(seg);
   updateMeta(seg);
+  // أخفِ التصويت كلما بدأت سيجمنت جديد (غير ending)
+  if(seg !== 'ending' && window.hideVoteSection) window.hideVoteSection();
   if(play) vid.play();
 }
 
@@ -217,7 +141,7 @@ function updateProgressUI(seg){
   if(!f || !f.path){ pathProg.classList.remove('visible'); return; }
   pathProg.classList.add('visible');
   const isElm = f.path === 'elm';
-  pathLbl.className = 'path-label ' + (isElm ? 'elm-label' : 'fan-label');
+  pathLbl.className   = 'path-label ' + (isElm ? 'elm-label' : 'fan-label');
   pathLbl.textContent = isElm ? 'مسار العلم 🔬' : 'مسار الفنكوش 🔮';
   for(let i=1;i<=3;i++){
     const d = document.getElementById('dot'+i);
@@ -228,21 +152,19 @@ function updateProgressUI(seg){
   const swBtn = document.getElementById('switchPathBtn');
   if(swBtn){
     swBtn.textContent = isElm ? '🔮 عايز تسمع رأي الفنكوش؟' : '🔬 عايز تسمع رأي العلم؟';
-    swBtn.className = 'switch-path-btn ' + (isElm ? 'switch-to-fan' : 'switch-to-elm');
+    swBtn.className   = 'switch-path-btn ' + (isElm ? 'switch-to-fan' : 'switch-to-elm');
   }
 }
 
 function switchPath(){
   const f = FLOW[curSeg];
   if(!f || !f.path) return;
-  const isElm = f.path === 'elm';
-  const step = f.step;
-  const otherSeg = (isElm ? 'fan_' : 'elm_') + step;
+  const otherSeg = (f.path === 'elm' ? 'fan_' : 'elm_') + f.step;
   hideOverlay();
   loadSeg(otherSeg, true);
 }
 
-// ── LOAD EPISODE ──
+// ══ loadEpisode ══
 function loadEpisode(ep) {
   currentEp = ep;
   window._currentEpNum = ep;
@@ -256,12 +178,8 @@ function loadEpisode(ep) {
   const rb = document.getElementById('restartBtn');
   if(rb) rb.remove();
 
-  // إخفاء الـ poll لو كان مفتوح
-  const poll = document.getElementById('pollOverlay');
-  if(poll && poll.style.display !== 'none') {
-    poll.style.display = 'none';
-    document.body.style.overflow = '';
-  }
+  // reset قسم التصويت بحلقة الجديدة
+  if(window.hideVoteSection) window.hideVoteSection();
 
   goPage('home', document.querySelector('.nav-links a'));
   setTimeout(() => {
@@ -270,23 +188,23 @@ function loadEpisode(ep) {
   }, 400);
 
   const heroBtn = document.querySelector('.btn-p');
-  if(heroBtn) {
+  if(heroBtn){
     heroBtn.textContent = `شاهد الحلقة ${epName} ↓`;
     heroBtn.onclick = () => scrollToPlayer();
   }
 }
 
 function updateMeta(seg){
-  const badge = document.getElementById('epBadge');
+  const badge  = document.getElementById('epBadge');
   const epData = EPISODES[currentEp];
   if(seg === 'intro'){
     metaDesc.textContent = epData.desc;
-    badge.textContent = 'مسار مزدوج ✦';
-    badge.style.cssText = 'background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.25);color:var(--elm)';
+    badge.textContent    = 'مسار مزدوج ✦';
+    badge.style.cssText  = 'background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.25);color:var(--elm)';
   } else if(seg === 'ending'){
     metaDesc.textContent = epData.endingDesc;
-    badge.textContent = 'الخاتمة الموحدة ✦';
-    badge.style.cssText = 'background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.15);color:#fff';
+    badge.textContent    = 'الخاتمة الموحدة ✦';
+    badge.style.cssText  = 'background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.15);color:#fff';
   } else {
     const f = FLOW[seg]; if(!f) return;
     const isElm = f.path === 'elm';
@@ -295,8 +213,8 @@ function updateMeta(seg){
       fan_1:'المعلومة الأولى', fan_2:'المعلومة الثانية', fan_3:'المعلومة الثالثة'
     };
     metaDesc.textContent = (names[seg]||'') + (isElm ? ' — مسار العلم' : ' — مسار الفنكوش');
-    badge.textContent = isElm ? 'مسار العلم 🔬' : 'مسار الفنكوش 🔮';
-    badge.style.cssText = isElm
+    badge.textContent    = isElm ? 'مسار العلم 🔬' : 'مسار الفنكوش 🔮';
+    badge.style.cssText  = isElm
       ? 'background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.25);color:var(--elm)'
       : 'background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.25);color:var(--fan)';
   }
@@ -308,21 +226,21 @@ function showOverlay(seg){
   olay.classList.remove('visible');
   overlayBtns.innerHTML = '';
   if(f.type === 'choice'){
-    overlayQ.innerHTML = EPISODES[currentEp].overlayQ;
+    overlayQ.innerHTML      = EPISODES[currentEp].overlayQ;
     overlayHint.textContent = 'اختر المسار الذي تريد متابعته';
-    overlayBtns.innerHTML = `
+    overlayBtns.innerHTML   = `
       <div class="overlay-btns-choice">
         <button class="ov-btn elm" onclick="choosePath('elm');event.stopPropagation()">علم</button>
         <button class="ov-btn fan" onclick="choosePath('fan');event.stopPropagation()">فنكوش</button>
       </div>`;
   } else if(f.type === 'continue'){
-    const isElm = f.path === 'elm';
-    const col = isElm ? 'var(--elm)' : 'var(--fan)';
-    const cls = isElm ? 'elm-next' : 'fan-next';
+    const isElm   = f.path === 'elm';
+    const col     = isElm ? 'var(--elm)' : 'var(--fan)';
+    const cls     = isElm ? 'elm-next'   : 'fan-next';
     const nextTxt = f.step === 2 ? 'المعلومة الثالثة ←' : 'المعلومة التالية ←';
-    overlayQ.innerHTML = `المعلومة <span style="color:${col}">${f.step} / 3</span> انتهت…`;
+    overlayQ.innerHTML      = `المعلومة <span style="color:${col}">${f.step} / 3</span> انتهت…`;
     overlayHint.textContent = 'أو تخطّ للخاتمة الموحدة مباشرة';
-    overlayBtns.innerHTML = `
+    overlayBtns.innerHTML   = `
       <div class="overlay-btns-continue">
         <button class="ov-btn-next ${cls}" onclick="goNext('${f.next}');event.stopPropagation()">${nextTxt}</button>
         <button class="ov-btn-next skip"   onclick="goNext('ending');event.stopPropagation()">انتقل للخاتمة ←</button>
@@ -338,7 +256,7 @@ function goNext(seg)      { hideOverlay(); loadSeg(seg, true); }
 function showRestartBtn(){
   if(document.getElementById('restartBtn')) return;
   const btn = document.createElement('button');
-  btn.id = 'restartBtn';
+  btn.id          = 'restartBtn';
   btn.textContent = '↺ جرّب المسار الآخر';
   btn.onclick = (e) => {
     e.stopPropagation();
@@ -356,7 +274,6 @@ function showControls(){
     if(!vid.paused) ctrl.classList.remove('visible');
   }, 2500);
 }
-
 wrap.addEventListener('mousemove', showControls);
 wrap.addEventListener('touchstart', () => {
   ctrl.classList.contains('visible')
@@ -384,16 +301,19 @@ vid.addEventListener('ended', () => {
   pBtn.textContent = '▶';
   clearTimeout(ctrlTimer);
   ctrl.classList.add('visible');
+
   const f = FLOW[curSeg];
   if(!f) return;
+
   if(f.type === 'auto') {
     loadSeg(f.next, true);
   } else if(f.type === 'end') {
+    // ١) اعرض زرار "جرّب المسار الآخر"
     showRestartBtn();
-    // إظهار التصويت بعد ثانية عشان الـ restart btn يظهر أول
+    // ٢) بعد ثانية اعرض قسم التصويت الخاص بالحلقة دي
     setTimeout(() => {
       if(window.showPoll) window.showPoll(currentEp);
-    }, 800);
+    }, 900);
   } else {
     showOverlay(curSeg);
   }
@@ -423,8 +343,8 @@ ctrl.classList.add('visible');
 const sbo = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if(e.isIntersecting){
-      e.target.querySelectorAll('.step-item').forEach((s,i) => setTimeout(() => s.classList.add('animated'), i*220));
-      e.target.querySelectorAll('.step-connector').forEach((c,i) => setTimeout(() => c.classList.add('show'), (i+1)*220+100));
+      e.target.querySelectorAll('.step-item').forEach((s,i)     => setTimeout(() => s.classList.add('animated'), i*220));
+      e.target.querySelectorAll('.step-connector').forEach((c,i) => setTimeout(() => c.classList.add('show'),    (i+1)*220+100));
       sbo.unobserve(e.target);
     }
   });
