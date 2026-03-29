@@ -262,7 +262,9 @@ function showRestartBtn(){
     e.stopPropagation();
     btn.remove();
     if(window.hideVoteSection) window.hideVoteSection();
-    loadSeg('intro', true);
+    // روح للمسار الآخر مباشرة بدل ما ترجع للـ intro
+    const otherPath = (window._userChoice === 'elm') ? 'fan' : 'elm';
+    loadSeg(otherPath + '_1', true);
   };
   // حطّه في الـ vov-top-row عشان يبقى أعلى يسار
   const topRow = document.querySelector('.vov-top-row');

@@ -96,7 +96,8 @@
 
   /* ── doShare ── */
   window.doShare = function (type) {
-    var url = window.location.href;
+    var epNum = window._currentEpNum || 1;
+    var url = window.location.origin + window.location.pathname + "?ep=" + epNum;
     var msg = buildMsg();
 
     if (type === 'whatsapp') {
