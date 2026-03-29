@@ -78,6 +78,10 @@
           <div class="vov-top-row">
             <div class="vov-q">أنا اخترت…</div>
           </div>
+          <!-- زرار المشاركة — يظهر بعد التصويت، فوق الأزرار -->
+          <button class="share-trigger" id="shareTrigger" onclick="toggleShareMenu(event)">
+            📤 شارك التجربة مع صحابك
+          </button>
           <div class="vov-choices" id="vovChoices">
             <button class="vov-btn vov-btn-elm" id="vovBtnElm" onclick="castVote('elm')">
               <span class="vov-icon">🔬</span>
@@ -238,8 +242,16 @@
   </div>
 </div>
 
+<!-- القائمة خارج كل الـ overlays عشان مفيش تعارض مع transform -->
+<div class="share-menu" id="shareMenu">
+  <button class="share-opt" onclick="doShare('whatsapp')"><span>📲</span> واتساب</button>
+  <button class="share-opt" onclick="doShare('facebook')"><span>📘</span> فيسبوك</button>
+  <button class="share-opt" id="shareCopyBtn" onclick="doShare('copy')"><span>🔗</span> نسخ الرابط</button>
+</div>
+
 <!-- ══ SCRIPTS ══ -->
 <script src="script.js"></script>
+<script src="share.js"></script>
 
 <script type="module">
   import { initializeApp }
@@ -274,6 +286,7 @@
     // لو سبق وصوّت → اعرض النتايج مباشرة
     const voted = localStorage.getItem(`ewf_voted_ep${epNum}`);
     if (voted) {
+      window._userChoice = voted;
       markChosen(voted);
       listenVotes(epNum);
     }
@@ -288,6 +301,7 @@
     if (localStorage.getItem(key)) return;
 
     localStorage.setItem(key, choice);
+    window._userChoice = choice;
 
     update(ref(db, `votes/ep${epNum}`), { [choice]: increment(1) });
 
@@ -306,6 +320,7 @@
 
   // ══ listenVotes ══
   function listenVotes(epNum) {
+    let firstRun = true;
     unsubscribe = onValue(ref(db, `votes/ep${epNum}`), snap => {
       const d   = snap.val() || {};
       const elm = d.elm      || 0;
@@ -321,6 +336,10 @@
         document.getElementById('vovPctFan').textContent = pF + '%';
         document.getElementById('vovTotal').textContent  =
           `👥 ${(elm + fan).toLocaleString('ar-EG')} مشارك`;
+        if (firstRun) {
+          firstRun = false;
+          setTimeout(() => { if (window.showShareBtn) window.showShareBtn(); }, 500);
+        }
       }));
     });
   }
@@ -338,6 +357,9 @@
     document.getElementById('vovPctElm').textContent = '';
     document.getElementById('vovPctFan').textContent = '';
     document.getElementById('vovTotal').textContent  = '';
+
+    window._userChoice = null;
+    if (window.hideShareBtn) window.hideShareBtn();
 
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
   };

@@ -430,3 +430,110 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
   .episodes-grid{grid-template-columns:1fr;}
 }
 
+
+/* ══════════════════════════════════════════
+   SHARE — إضافة معزولة
+   ══════════════════════════════════════════ */
+
+/* زرار المشاركة داخل vote-overlay */
+.share-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 20px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.07);
+  color: rgba(255,255,255,.85);
+  font-family: 'Cairo', sans-serif;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  letter-spacing: .2px;
+  will-change: opacity, transform;
+  /* مخفي في الأول */
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity .4s ease, transform .4s cubic-bezier(.34,1.56,.64,1),
+              background .2s, border-color .2s, box-shadow .2s;
+  animation: none;
+}
+.share-trigger.share-on {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+  animation: sharePulse 3s ease-in-out infinite;
+}
+@keyframes sharePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,.0);  border-color: rgba(255,255,255,.18); }
+  50%       { box-shadow: 0 0 14px 2px rgba(255,255,255,.12); border-color: rgba(255,255,255,.35); }
+}
+.share-trigger:hover {
+  background: rgba(255,255,255,.13);
+  border-color: rgba(255,255,255,.3);
+  transform: translateY(-2px);
+  animation: none;
+  box-shadow: 0 4px 18px rgba(0,0,0,.3);
+}
+
+/* القائمة — مربوطة بـ body مش بالـ overlay */
+.share-menu {
+  position: fixed;
+  z-index: 9999;
+  background: rgba(8,15,26,.96);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 160px;
+  /* مخفية */
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(.94) translateY(4px);
+  transform-origin: top center;
+  transition: opacity .18s ease, transform .2s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: 0 10px 36px rgba(0,0,0,.55);
+}
+.share-menu.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: scale(1) translateY(0);
+}
+
+.share-opt {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 14px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,.78);
+  font-family: 'Cairo', sans-serif;
+  font-size: .84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  width: 100%;
+  direction: rtl;
+  text-align: right;
+  white-space: nowrap;
+}
+.share-opt:hover { background: rgba(255,255,255,.09); color: #fff; }
+.share-opt span  { font-size: .95rem; flex-shrink: 0; }
+
+/* تابلت */
+@media (min-width:600px) {
+  .share-trigger { font-size: .82rem; padding: 9px 22px; }
+}
+/* لاب / ديسكتوب */
+@media (min-width:900px) {
+  .share-trigger { font-size: .86rem; padding: 10px 26px; }
+  .share-opt     { font-size: .86rem; }
+}
