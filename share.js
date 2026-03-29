@@ -14,7 +14,7 @@
         window.history.pushState({ ep: ep }, '', '?ep=' + ep);
       };
     }
-    /* لو فيه ?ep= في الـ URL عند التحميل */
+    /* لو فيه ?ep= في الـ URL عند التحميل → حمّل الحلقة دي */
     var ep = parseInt(new URLSearchParams(window.location.search).get('ep'), 10);
     if (ep >= 1 && ep <= 13) {
       setTimeout(function () {
@@ -28,7 +28,7 @@
     if (ep && typeof loadEpisode === 'function') loadEpisode(ep);
   });
 
-  /* ── show/hide الزرار ── */
+  /* ── show/hide زرار الشير ── */
   window.showShareBtn = function () {
     var t = document.getElementById('shareTrigger');
     if (t) t.classList.add('share-on');
@@ -57,11 +57,9 @@
     var mw = 168;
     var mh = 130;
 
-    /* توسيط أفقي، مع تأكد مش بيطلع بره الشاشة */
     var left = r.left + r.width / 2 - mw / 2;
     left = Math.max(8, Math.min(left, window.innerWidth - mw - 8));
 
-    /* فوق لو في مساحة، تحت لو مفيش */
     var top = r.top > mh + 16 ? r.top - mh - 8 : r.bottom + 8;
 
     m.style.left  = left + 'px';
@@ -87,17 +85,18 @@
   window.addEventListener('scroll', closeMenu, { passive: true });
   window.addEventListener('resize', closeMenu, { passive: true });
 
-  /* ── رسالة المشاركة ── */
+  /* ── رسالة المشاركة — بتشيل اسم المسار لو اتاختار ── */
   function buildMsg() {
-    if (window._userChoice === 'elm')      return 'أنا اخترت "علم"... وانت؟';
-    if (window._userChoice === 'fankoush') return 'أنا اخترت "فنكوش"... وانت؟';
-    return 'علم ولا فنكوش؟ جرّب وصوّت!';
+    if (window._userChoice === 'elm')      return 'اخترت مسار العلم... وانت هتختار إيه؟';
+    if (window._userChoice === 'fankoush') return 'اخترت مسار الفنكوش... وانت هتختار إيه؟';
+    return 'علم ولا فنكوش؟ — جرّب وصوّت!';
   }
 
-  /* ── doShare ── */
+  /* ── doShare — URL فيه رقم الحلقة دايمًا ── */
   window.doShare = function (type) {
     var epNum = window._currentEpNum || 1;
-    var url = window.location.origin + window.location.pathname + "?ep=" + epNum;
+    /* رابط نظيف بيودّي للحلقة مباشرة */
+    var url = window.location.origin + window.location.pathname + '?ep=' + epNum;
     var msg = buildMsg();
 
     if (type === 'whatsapp') {

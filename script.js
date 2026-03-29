@@ -83,6 +83,7 @@ const EP_NAMES = {
 
 let currentEp = 1;
 window._currentEpNum = 1;
+window._currentPath  = null;  /* elm | fan — يتحدث مع كل اختيار */
 
 function getVideos(ep) {
   const s = EPISODES[ep].suffix;
@@ -159,7 +160,9 @@ function updateProgressUI(seg){
 function switchPath(){
   const f = FLOW[curSeg];
   if(!f || !f.path) return;
-  const otherSeg = (f.path === 'elm' ? 'fan_' : 'elm_') + f.step;
+  const newPath  = f.path === 'elm' ? 'fan' : 'elm';
+  const otherSeg = newPath + '_' + f.step;
+  window._currentPath = newPath;       /* ← track المسار بعد التبديل */
   hideOverlay();
   loadSeg(otherSeg, true);
 }
@@ -168,6 +171,7 @@ function switchPath(){
 function loadEpisode(ep) {
   currentEp = ep;
   window._currentEpNum = ep;
+  window._currentPath  = null;   /* ← reset المسار تمامًا */
   VIDEOS = getVideos(ep);
   const epData = EPISODES[ep];
   const epName = EP_NAMES[ep] || ep;
@@ -175,11 +179,12 @@ function loadEpisode(ep) {
   const titleEl = document.getElementById('epTitle');
   if(titleEl) titleEl.textContent = `الحلقة ${epName}: ${epData.title}`;
 
+  /* ← أزل restartBtn وأخفِ الـ overlay والتصويت فورًا */
   const rb = document.getElementById('restartBtn');
   if(rb) rb.remove();
-
-  // reset قسم التصويت بحلقة الجديدة
+  hideOverlay();                          /* ← مهم: يخفي overlay الحلقة القديمة */
   if(window.hideVoteSection) window.hideVoteSection();
+  curSeg = '';                           /* ← reset segment tracking */
 
   goPage('home', document.querySelector('.nav-links a'));
   setTimeout(() => {
@@ -250,8 +255,12 @@ function showOverlay(seg){
 }
 
 function hideOverlay(){ olay.classList.remove('visible'); }
-function choosePath(path){ hideOverlay(); loadSeg(path+'_1', true); }
-function goNext(seg)      { hideOverlay(); loadSeg(seg, true); }
+function choosePath(path){
+  window._currentPath = path;          /* ← track المسار المختار */
+  hideOverlay();
+  loadSeg(path+'_1', true);
+}
+function goNext(seg){ hideOverlay(); loadSeg(seg, true); }
 
 function showRestartBtn(){
   if(document.getElementById('restartBtn')) return;
@@ -262,11 +271,11 @@ function showRestartBtn(){
     e.stopPropagation();
     btn.remove();
     if(window.hideVoteSection) window.hideVoteSection();
-    // روح للمسار الآخر مباشرة بدل ما ترجع للـ intro
-    const otherPath = (window._userChoice === 'elm') ? 'fan' : 'elm';
+    /* _currentPath أموثق دايمًا، _userChoice fallback لو الـ vote قديم */
+    const chosen    = window._currentPath || window._userChoice || 'elm';
+    const otherPath = chosen === 'elm' ? 'fan' : 'elm';
     loadSeg(otherPath + '_1', true);
   };
-  // حطّه في الـ vov-top-row عشان يبقى أعلى يسار
   const topRow = document.querySelector('.vov-top-row');
   if(topRow) topRow.appendChild(btn);
   else wrap.appendChild(btn);
