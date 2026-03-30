@@ -81,6 +81,9 @@ const EP_NAMES = {
   11:'الحادية عشر', 12:'الثانية عشر', 13:'الثالثة عشر'
 };
 
+/* ── الحلقات المتاحة بالترتيب — عدّل هنا لما تفتح حلقة جديدة ── */
+const UNLOCKED_EPS = [1, 2];
+
 let currentEp = 1;
 window._currentEpNum = 1;
 window._currentPath  = null;  /* elm | fan — يتحدث مع كل اختيار */
@@ -197,6 +200,8 @@ function loadEpisode(ep) {
     heroBtn.textContent = `شاهد الحلقة ${epName} ↓`;
     heroBtn.onclick = () => scrollToPlayer();
   }
+
+  updateEpNav(ep);   /* ← حدّث زراري السابقة / التالية */
 }
 
 function updateMeta(seg){
@@ -357,9 +362,48 @@ function toggleFS(){
 }
 function fmt(s){ return Math.floor(s/60) + ':' + Math.floor(s%60).toString().padStart(2,'0'); }
 
+// ── EP NAV — الحلقة السابقة / التالية ──
+function navigateEp(direction) {
+  const idx = UNLOCKED_EPS.indexOf(currentEp);
+  if (idx === -1) return;
+  const targetIdx = idx + direction;
+  if (targetIdx >= 0 && targetIdx < UNLOCKED_EPS.length) {
+    loadEpisode(UNLOCKED_EPS[targetIdx]);
+  }
+}
+
+function updateEpNav(ep) {
+  const nav      = document.getElementById('epNav');
+  const prevBtn  = document.getElementById('epNavPrev');
+  const nextBtn  = document.getElementById('epNavNext');
+  const prevName = document.getElementById('epNavPrevName');
+  const nextName = document.getElementById('epNavNextName');
+  if (!nav) return;
+
+  const idx     = UNLOCKED_EPS.indexOf(ep);
+  const hasPrev = idx > 0;
+  const hasNext = idx !== -1 && idx < UNLOCKED_EPS.length - 1;
+
+  /* أخفِ كل الـ nav لو الحلقة مش في القائمة أو مفيش سابق ولا تالي */
+  nav.classList.toggle('ep-nav-hidden', !hasPrev && !hasNext);
+
+  prevBtn.classList.toggle('ep-nav-invisible', !hasPrev);
+  nextBtn.classList.toggle('ep-nav-invisible', !hasNext);
+
+  if (hasPrev) {
+    const prevEp = UNLOCKED_EPS[idx - 1];
+    prevName.textContent = EPISODES[prevEp].title;
+  }
+  if (hasNext) {
+    const nextEp = UNLOCKED_EPS[idx + 1];
+    nextName.textContent = EPISODES[nextEp].title;
+  }
+}
+
 // ── BOOT ──
 loadSeg('intro', true);
 ctrl.classList.add('visible');
+updateEpNav(1);   /* ← init الزرارين عند التحميل الأول */
 
 // ── ABOUT SLOGAN ──
 const sbo = new IntersectionObserver(entries => {

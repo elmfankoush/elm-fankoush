@@ -434,6 +434,147 @@ nav::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;b
 
 
 /* ══════════════════════════════════════════
+   EP NAV — الحلقة السابقة / التالية
+   ══════════════════════════════════════════ */
+
+.ep-nav {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 28px 22px;
+  border-top: 1px solid var(--border);
+  transition: opacity .3s;
+}
+.ep-nav.ep-nav-hidden { display: none; }
+
+/* زرار مخفي بدون display:none عشان يحافظ على التوازن */
+.ep-nav-btn.ep-nav-invisible {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ep-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  max-width: 47%;
+  padding: 13px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.07);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  font-family: 'Cairo', sans-serif;
+  cursor: pointer;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1),
+              background .25s, border-color .25s, box-shadow .25s, opacity .3s;
+  position: relative;
+  overflow: hidden;
+  text-align: right;
+}
+.ep-nav-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .25s;
+}
+.ep-nav-btn:hover { transform: translateY(-3px); }
+
+/* السابقة — يمين — لون علم */
+.ep-nav-prev { justify-content: flex-end; }
+.ep-nav-prev::after {
+  background: linear-gradient(135deg, rgba(56,189,248,.09), transparent);
+}
+.ep-nav-prev:hover {
+  border-color: rgba(56,189,248,.28);
+  background: rgba(56,189,248,.05);
+  box-shadow: 0 8px 28px rgba(56,189,248,.13);
+}
+.ep-nav-prev:hover::after { opacity: 1; }
+
+/* التالية — يسار — لون فنكوش */
+.ep-nav-next { justify-content: flex-start; text-align: left; }
+.ep-nav-next::after {
+  background: linear-gradient(225deg, rgba(251,146,60,.09), transparent);
+}
+.ep-nav-next:hover {
+  border-color: rgba(251,146,60,.28);
+  background: rgba(251,146,60,.05);
+  box-shadow: 0 8px 28px rgba(251,146,60,.13);
+}
+.ep-nav-next:hover::after { opacity: 1; }
+
+/* السهم */
+.ep-nav-arrow {
+  font-size: 1.3rem;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+  position: relative; z-index: 1;
+}
+.ep-nav-prev .ep-nav-arrow { color: var(--elm); }
+.ep-nav-next .ep-nav-arrow { color: var(--fan); }
+.ep-nav-prev:hover .ep-nav-arrow { transform: translateX(4px) scale(1.15); }
+.ep-nav-next:hover .ep-nav-arrow { transform: translateX(-4px) scale(1.15); }
+
+/* النص */
+.ep-nav-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: relative; z-index: 1;
+}
+.ep-nav-label {
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .9px;
+  color: var(--dim);
+  white-space: nowrap;
+}
+.ep-nav-name {
+  font-size: .84rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+  transition: color .25s;
+}
+.ep-nav-prev:hover .ep-nav-name { color: var(--elm); }
+.ep-nav-next:hover .ep-nav-name { color: var(--fan); }
+
+/* تابلت */
+@media(min-width:600px) and (max-width:899px) {
+  .ep-nav { padding: 12px 22px 20px; gap: 8px; }
+  .ep-nav-btn { padding: 12px 15px; border-radius: 14px; }
+  .ep-nav-name { max-width: 140px; font-size: .8rem; }
+}
+
+/* موبايل */
+@media(max-width:640px) {
+  .ep-nav {
+    flex-direction: column;
+    padding: 10px 18px 16px;
+    gap: 8px;
+  }
+  .ep-nav-btn {
+    max-width: 100%;
+    padding: 11px 16px;
+    border-radius: 14px;
+  }
+  .ep-nav-prev { justify-content: flex-end; }
+  .ep-nav-next { justify-content: flex-start; }
+  .ep-nav-name { max-width: none; font-size: .82rem; }
+  .ep-nav-label { font-size: .6rem; }
+  .ep-nav-arrow { font-size: 1.1rem; }
+  /* على الموبايل: الزرار المخفي مش بيأخذ مساحة */
+  .ep-nav-btn.ep-nav-invisible { display: none; }
+}
+
+/* ══════════════════════════════════════════
    SHARE — إضافة معزولة
    ══════════════════════════════════════════ */
 

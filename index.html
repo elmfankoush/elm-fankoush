@@ -309,7 +309,23 @@
         <div class="ep-badge" id="epBadge">مسار مزدوج ✦</div>
       </div>
 
-
+      <!-- ══ EP NAV — الحلقة السابقة / التالية ══ -->
+      <div class="ep-nav" id="epNav">
+        <button class="ep-nav-btn ep-nav-prev" id="epNavPrev" onclick="navigateEp(-1)">
+          <span class="ep-nav-text">
+            <span class="ep-nav-label">الحلقة السابقة</span>
+            <span class="ep-nav-name" id="epNavPrevName"></span>
+          </span>
+          <span class="ep-nav-arrow">›</span>
+        </button>
+        <button class="ep-nav-btn ep-nav-next" id="epNavNext" onclick="navigateEp(1)">
+          <span class="ep-nav-arrow">‹</span>
+          <span class="ep-nav-text">
+            <span class="ep-nav-label">الحلقة التالية</span>
+            <span class="ep-nav-name" id="epNavNextName"></span>
+          </span>
+        </button>
+      </div>
 
     </div>
   </section>
